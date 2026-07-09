@@ -185,8 +185,8 @@ const VirtuousCircleSVG = () => (
     <rect x="485" y="219" width="190" height="62" rx="12" fill="#15211a" stroke="#7abe4d" strokeWidth="1.2" />
     <text x="580" y="256" textAnchor="middle" fill="#a3d97a" fontSize="19" fontWeight="600">VTRU strengthens</text>
 
-    <rect x="305" y="399" width="190" height="62" rx="12" fill="#15211a" stroke="#7abe4d" strokeWidth="1.2" />
-    <text x="400" y="436" textAnchor="middle" fill="#a3d97a" fontSize="19" fontWeight="600">Ecosystem grows</text>
+    <rect x="280" y="399" width="240" height="62" rx="12" fill="#15211a" stroke="#7abe4d" strokeWidth="1.2" />
+    <text x="400" y="436" textAnchor="middle" fill="#a3d97a" fontSize="19" fontWeight="600">Vitruveo ecosystem grows</text>
 
     <rect x="125" y="219" width="190" height="62" rx="12" fill="#15211a" stroke="#7abe4d" strokeWidth="1.2" />
     <text x="220" y="256" textAnchor="middle" fill="#a3d97a" fontSize="19" fontWeight="600">VIBE holders earn</text>
@@ -226,8 +226,45 @@ export default function PretrendPage() {
           </div>
         </section>
 
+        {/* Vision */}
+        <section id="vision" className="section-padding bg-dark-alt">
+          <div className="container">
+            <div className="text-center mb-5">
+              <h2 className="display-6 fw-bold mb-4">Vision</h2>
+              <p className="h4 fw-semibold" style={{ maxWidth: '780px', margin: '0 auto', lineHeight: 1.5 }}>
+                The <span className="text-gradient">flagship application</span> of the
+                Vitruveo ecosystem — backed all the way by Vertical Foundation
+              </p>
+            </div>
+
+            <div style={{ maxWidth: '820px', margin: '0 auto' }}>
+              <p className="text-muted-custom mb-4">
+                Pretrend&apos;s statistical engine ships inside the Vitruveo protocol itself —
+                compiled Go running at the client layer, not contract bytecode. That depth of
+                integration is deliberate: Vertical Foundation is all-in on making Pretrend
+                the defining application of the ecosystem, with VTRU as its primary currency.
+              </p>
+              <p className="text-muted-custom mb-4">
+                Polymarket proved the appetite. Pretrend isn&apos;t competing for that
+                audience — it&apos;s building the layer beneath: an oracle, an unbiased and
+                verifiable source of truth that any marketplace can resolve against. With the
+                Pretrend contracts and the Trend Market Starter Kit, launching a trend market
+                for your own community becomes a weekend project, not a venture.
+              </p>
+              <p className="text-muted-custom mb-0">
+                We&apos;re bootstrapping Pretrend until the traction speaks for itself — and
+                we&apos;re open to one or two angel investors who want to help it speak
+                sooner. If that&apos;s you, reach us at{' '}
+                <a href="mailto:info@verticalfoundation.net" className="text-green text-decoration-none">
+                  info@verticalfoundation.net
+                </a>.
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* Pretrend Roadmap */}
-        <section id="roadmap" className="section-padding bg-dark-alt">
+        <section id="roadmap" className="section-padding bg-dark-custom">
           <div className="container">
             <div className="text-center mb-5">
               <h2 className="display-6 fw-bold mb-3">2026 Roadmap</h2>
@@ -501,7 +538,7 @@ export default function PretrendPage() {
               <h2 className="display-6 fw-bold mb-3">A Virtuous Circle</h2>
               <p className="text-muted-custom" style={{ maxWidth: '720px', margin: '0 auto' }}>
                 Pretrend doesn&apos;t grow in isolation. A share of every dollar it earns flows back
-                into the ecosystem — and that success compounds.
+                into the Vitruveo ecosystem — and that success compounds.
               </p>
             </div>
 
@@ -518,7 +555,7 @@ export default function PretrendPage() {
                 <div className="card-accent p-4 p-lg-5 h-100">
                   <h3 className="h5 mb-3">The 2% Revenue Share</h3>
                   <p className="text-muted-custom mb-3">
-                    2% of all Pretrend revenue is split straight back into the ecosystem:
+                    2% of all Pretrend revenue is split straight back into the Vitruveo ecosystem:
                   </p>
                   <div className="d-flex flex-column gap-2">
                     <div className="p-3 rounded" style={{ background: 'rgba(0,0,0,0.25)' }}>
@@ -537,7 +574,7 @@ export default function PretrendPage() {
                   <h3 className="h5 text-green mb-3">Success compounds</h3>
                   <p className="text-muted-custom mb-0">
                     Pretrend&apos;s success drives VTRU&apos;s, and VTRU&apos;s drives the whole
-                    ecosystem&apos;s — lifting asset value and rewarding VIBE holders at the same time.
+                    Vitruveo ecosystem&apos;s — lifting asset value and rewarding VIBE holders at the same time.
                   </p>
                 </div>
               </div>
