@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-export default function Footer() {
+export default function Footer({ disclaimer }: { disclaimer?: string }) {
   return (
     <footer className="footer-dark py-5">
       <div className="container">
@@ -23,12 +23,20 @@ export default function Footer() {
             <a href="/examples" className="me-4">
               Examples
             </a>
+            <a href="/investors" className="me-4">
+              Investors
+            </a>
             <a href="mailto:info@verticalfoundation.net">
               Contact
             </a>
           </div>
         </div>
         <hr className="my-4" style={{ borderColor: 'rgba(255,255,255,0.1)' }} />
+        {disclaimer && (
+          <p className="text-center text-white-50 small mb-3" style={{ maxWidth: '720px', margin: '0 auto' }}>
+            {disclaimer}
+          </p>
+        )}
         <p className="text-center text-white-50 small mb-0">
           © {new Date().getFullYear()} Pretrend · A Vertical Foundation project
         </p>

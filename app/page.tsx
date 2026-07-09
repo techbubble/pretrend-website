@@ -244,20 +244,12 @@ export default function PretrendPage() {
                 integration is deliberate: Vertical Foundation is all-in on making Pretrend
                 the defining application of the ecosystem, with VTRU as its primary currency.
               </p>
-              <p className="text-muted-custom mb-4">
+              <p className="text-muted-custom mb-0">
                 Polymarket proved the appetite. Pretrend isn&apos;t competing for that
                 audience — it&apos;s building the layer beneath: an oracle, an unbiased and
                 verifiable source of truth that any marketplace can resolve against. With the
                 Pretrend contracts and the Trend Market Starter Kit, launching a trend market
                 for your own community becomes a weekend project, not a venture.
-              </p>
-              <p className="text-muted-custom mb-0">
-                We&apos;re bootstrapping Pretrend until the traction speaks for itself — and
-                we&apos;re open to one or two angel investors who want to help it speak
-                sooner. If that&apos;s you, reach us at{' '}
-                <a href="mailto:info@verticalfoundation.net" className="text-green text-decoration-none">
-                  info@verticalfoundation.net
-                </a>.
               </p>
             </div>
           </div>
