@@ -1,0 +1,503 @@
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+:root {
+  --vf-dark: #0a0f0a;
+  --vf-dark-alt: #0d120d;
+  --vf-green: #3f6d2c;
+  --vf-green-light: #7abe4d;
+  --vf-green-lighter: #a3d97a;
+  /* Pretrend brand gradient companions (logomark: green -> teal -> blue) */
+  --pt-teal: #388697;
+  --pt-blue: #2f8fd6;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--vf-dark);
+  color: #fff;
+  line-height: 1.7;
+  font-weight: 200;
+  font-size: 1.2rem;
+}
+
+/* Boost text sizes by 20% */
+.lead {
+  font-size: 1.5rem;
+}
+
+p {
+  font-size: 1.2rem;
+}
+
+.small, small {
+  font-size: 1rem;
+}
+
+.h4, h4 {
+  font-size: 1.5rem;
+}
+
+.h5, h5 {
+  font-size: 1.25rem;
+}
+
+/* Override Bootstrap dark theme */
+.bg-dark-custom {
+  background-color: var(--vf-dark) !important;
+}
+
+.bg-dark-alt {
+  background-color: #111811 !important;
+}
+
+/* External link icon */
+.external-link-icon {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin-left: 6px;
+  opacity: 0.7;
+}
+
+/* SVG workflow diagrams */
+.workflow-svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.workflow-svg text {
+  font-family: inherit;
+}
+
+/* Icon containers */
+.icon-container {
+  width: 72px;
+  height: 72px;
+  background: rgba(45, 90, 61, 0.3);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.icon-container svg {
+  width: 36px;
+  height: 36px;
+  color: var(--vf-green-lighter);
+}
+
+.icon-container-lg {
+  width: 88px;
+  height: 88px;
+  background: rgba(45, 90, 61, 0.3);
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.25rem;
+}
+
+.icon-container-lg svg {
+  width: 44px;
+  height: 44px;
+  color: var(--vf-green-lighter);
+}
+
+.icon-container-sm {
+  width: 48px;
+  height: 48px;
+  background: rgba(45, 90, 61, 0.3);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon-container-sm svg {
+  width: 24px;
+  height: 24px;
+  color: var(--vf-green-lighter);
+}
+
+/* Demo icons - no background, just the icon */
+.demo-icon {
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.demo-icon svg {
+  width: 48px;
+  height: 48px;
+}
+
+/* Video background */
+.video-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.video-bg video {
+  width: 110%;
+  height: 110%;
+  object-fit: cover;
+  object-position: top left;
+  transform: translate(-2%, -2%);
+}
+
+.video-bg::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 15, 10, 0.7);
+}
+
+/* Typography */
+.text-gradient {
+  background: linear-gradient(135deg, var(--vf-green-light), var(--pt-blue));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.text-green {
+  color: var(--vf-green-lighter) !important;
+}
+
+.text-muted-custom {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* Cards */
+.card-dark {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+}
+
+.card-accent {
+  background: rgba(45, 90, 61, 0.2);
+  border: 1px solid rgba(45, 90, 61, 0.4);
+  border-radius: 12px;
+}
+
+/* Pulsing glow for completed milestones */
+@keyframes vfPulse {
+  0%, 100% { box-shadow: 0 0 22px rgba(74, 222, 128, 0.5); }
+  50% { box-shadow: 0 0 46px rgba(74, 222, 128, 0.9); }
+}
+
+.vf-pulse {
+  animation: vfPulse 2.6s ease-in-out infinite;
+}
+
+/* In-progress motion: spinning gear + flipping hourglass */
+@keyframes vfSpin {
+  to { transform: rotate(360deg); }
+}
+
+.vf-spin {
+  animation: vfSpin 9s linear infinite;
+  transform-origin: center;
+}
+
+@keyframes vfFlip {
+  0%, 35% { transform: rotate(0deg); }
+  50%, 85% { transform: rotate(180deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.vf-flip {
+  animation: vfFlip 4.5s ease-in-out infinite;
+  transform-origin: center;
+}
+
+/* Marching-dash ring for the virtuous-circle flywheel */
+@keyframes vfDash {
+  to { stroke-dashoffset: -170; }
+}
+
+.vf-dash {
+  animation: vfDash 5s linear infinite;
+}
+
+/* Animated sheen for active validator slots */
+@keyframes vfSlotShimmer {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.vf-slot-active {
+  background-size: 220% 220%;
+  animation: vfSlotShimmer 3s ease-in-out infinite;
+}
+
+/* Clickable validator slots: highlight on hover */
+.vf-slot-clickable {
+  transition: border-color 0.12s, box-shadow 0.12s, background 0.12s;
+}
+
+.vf-slot-clickable:hover {
+  border-color: rgba(74, 222, 128, 0.9) !important;
+  background: rgba(74, 222, 128, 0.14) !important;
+  box-shadow: 0 0 0 1px rgba(74, 222, 128, 0.6), 0 0 12px rgba(74, 222, 128, 0.35);
+}
+
+/* Node calculator table: keep first/last columns off the box edges */
+.calc-table th:first-child,
+.calc-table td:first-child {
+  padding-left: 1rem;
+}
+
+.calc-table th:last-child,
+.calc-table td:last-child {
+  padding-right: 1rem;
+}
+
+/* Prominent CTA button */
+.btn-green {
+  background-color: var(--vf-green-light);
+  border: 1px solid var(--vf-green-light);
+  color: #0a0f0a;
+  font-weight: 600;
+}
+
+.btn-green:hover,
+.btn-green:focus {
+  background-color: var(--vf-green-lighter);
+  border-color: var(--vf-green-lighter);
+  color: #0a0f0a;
+}
+
+/* Tightly-packed multi-column list (avoids Bootstrap grid row gaps) */
+.achievement-columns {
+  column-count: 1;
+  column-gap: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .achievement-columns {
+    column-count: 2;
+  }
+}
+
+.achievement-columns > * {
+  break-inside: avoid;
+}
+
+/* Hero section */
+.hero-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+/* Section spacing */
+.section-padding {
+  padding: 100px 0;
+}
+
+/* Navigation overrides */
+.navbar-dark .navbar-nav .nav-link {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover {
+  color: #fff;
+}
+
+/* Footer */
+.footer-dark {
+  background: #000;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-dark a {
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-dark a:hover {
+  color: #fff;
+}
+
+/* Feature numbers */
+.feature-number {
+  width: 48px;
+  height: 48px;
+  background: rgba(45, 90, 61, 0.5);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--vf-green-lighter);
+}
+
+/* Whitepaper document */
+.wp-toc {
+  position: sticky;
+  top: 96px;
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+}
+
+.wp-toc-link {
+  color: rgba(255, 255, 255, 0.55);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.wp-toc-link:hover {
+  color: var(--vf-green-lighter);
+}
+
+.wp-doc h2 {
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.7rem;
+  margin: 3rem 0 1.25rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(122, 190, 77, 0.35);
+  scroll-margin-top: 96px;
+}
+
+.wp-doc section:first-child h2 {
+  margin-top: 0;
+}
+
+.wp-doc h3 {
+  color: var(--vf-green-lighter);
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin: 2rem 0 1rem;
+}
+
+.wp-doc p {
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 1rem;
+}
+
+.wp-doc strong {
+  color: #fff;
+  font-weight: 600;
+}
+
+.wp-doc table {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  display: block;
+  overflow-x: auto;
+}
+
+.wp-doc th {
+  background: rgba(122, 190, 77, 0.08);
+  color: var(--vf-green-lighter);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  white-space: nowrap;
+}
+
+.wp-doc td {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.wp-doc .formula {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 1rem;
+  color: var(--vf-green-lighter);
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.5rem;
+  padding: 1rem 1.25rem;
+  margin: 1.25rem 0;
+  overflow-x: auto;
+}
+
+/* Compatibility shims for components ported from the Vitruveo site */
+.text-vtru-green {
+  color: var(--vf-green-lighter) !important;
+}
+
+.text-muted-light {
+  color: rgba(255, 255, 255, 0.75) !important;
+}
+
+.code-block {
+  background-color: #101510;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+}
+
+.code-block pre {
+  margin: 0;
+  color: var(--vf-green-lighter);
+  font-family: var(--bs-font-monospace);
+}
+
+/* Domain carousel (hero) */
+.domain-marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+}
+
+.domain-track {
+  display: flex;
+  gap: 1rem;
+  width: max-content;
+  animation: domainScroll 45s linear infinite;
+}
+
+.domain-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes domainScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.domain-card {
+  width: 210px;
+  flex-shrink: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .domain-track {
+    animation: none;
+  }
+}
