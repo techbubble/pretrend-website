@@ -526,3 +526,99 @@ p {
     border-radius: 4px;
   }
 }
+
+/* Hero animated background */
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+  -webkit-mask-image: linear-gradient(180deg, #000 0%, #000 75%, transparent 100%);
+  mask-image: linear-gradient(180deg, #000 0%, #000 75%, transparent 100%);
+}
+
+.hero-bg-bar {
+  opacity: 0.10;
+  transform-box: fill-box;
+  transform-origin: bottom;
+  animation: heroBarBreathe 7s ease-in-out infinite alternate;
+}
+
+@keyframes heroBarBreathe {
+  from { transform: scaleY(0.25); }
+  to { transform: scaleY(1); }
+}
+
+.hero-bg-line {
+  opacity: 0.10;
+  stroke-dasharray: 2400;
+  animation: heroLineDraw 24s ease-in-out infinite alternate;
+}
+
+.hero-bg-line-slow {
+  animation-duration: 32s;
+  opacity: 0.08;
+}
+
+@keyframes heroLineDraw {
+  from { stroke-dashoffset: 2400; }
+  to { stroke-dashoffset: 0; }
+}
+
+.hero-bg-fall {
+  opacity: 0;
+  animation-name: heroNumFall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes heroNumFall {
+  0% { transform: translateY(-40px) scale(0.85); opacity: 0; }
+  12% { opacity: 0.14; }
+  80% { opacity: 0.12; }
+  100% { transform: translateY(960px) scale(1.25); opacity: 0; }
+}
+
+.hero-bg-zoom {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+  animation-name: heroNumZoom;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes heroNumZoom {
+  0% { transform: scale(0.5); opacity: 0; }
+  35% { opacity: 0.16; }
+  70% { opacity: 0.05; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-bg-bar,
+  .hero-bg-line,
+  .hero-bg-fall,
+  .hero-bg-zoom {
+    animation: none;
+  }
+
+  .hero-bg-fall,
+  .hero-bg-zoom {
+    opacity: 0;
+  }
+}
+
+/* Intersection section: brand artwork backdrop, heavily darkened and edge-faded */
+.intersection-bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(10, 15, 10, 0.82), rgba(10, 15, 10, 0.82)),
+    url('/assets/pretrend-bg.jpg') center / cover no-repeat;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
+}

@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Header from './components/Header';
 import Footer from './components/Footer';
 import DomainCarousel from './components/DomainCarousel';
+import IntersectionSphere from './components/IntersectionSphere';
+import HeroBackground from './components/HeroBackground';
 import { AnimatedBuckets, CountUp } from './visuals';
 
 export const metadata: Metadata = {
@@ -205,8 +207,9 @@ export default function PretrendPage() {
       <Header />
       <main>
         {/* Hero */}
-        <section className="section-padding bg-dark-custom" style={{ paddingTop: '140px' }}>
-          <div className="container">
+        <section className="section-padding bg-dark-custom position-relative" style={{ paddingTop: '140px' }}>
+          <HeroBackground />
+          <div className="container position-relative" style={{ zIndex: 1 }}>
             <div className="text-center">
               <h1 className="display-4 fw-bold mb-3">
                 <span className="text-gradient">Pretrend</span> Protocol
@@ -255,8 +258,52 @@ export default function PretrendPage() {
           </div>
         </section>
 
+        {/* The Intersection */}
+        <section id="intersection" className="section-padding bg-dark-custom position-relative">
+          <div className="intersection-bg" aria-hidden="true" />
+          <div className="container position-relative" style={{ zIndex: 1 }}>
+            <div className="text-center mb-5">
+              <h2 className="display-6 fw-bold mb-3">Three Worlds, One Point</h2>
+              <p className="text-muted-custom" style={{ maxWidth: '720px', margin: '0 auto' }}>
+                Pretrend sits at the intersection of blockchain, artificial intelligence,
+                and the humanities.
+              </p>
+            </div>
+            <div className="row justify-content-center mb-5">
+              <div className="col-lg-9">
+                <IntersectionSphere />
+              </div>
+            </div>
+            <div style={{ maxWidth: '820px', margin: '0 auto' }}>
+              <p className="text-muted-custom mb-4">
+                Blockchain is the truth axis. Vitruveo computes every trend natively and
+                settles every market on-chain, so no participant has to take anyone&apos;s
+                word for an outcome — they can verify it.
+              </p>
+              <p className="text-muted-custom mb-4">
+                Artificial intelligence is the scale axis. The AI Notary watches data
+                sources around the clock, explains why probabilities are shifting, and
+                helps anyone design a well-calibrated market — work that once took a
+                trading desk.
+              </p>
+              <p className="text-muted-custom mb-4">
+                The humanities are the meaning axis. Markets are only interesting when
+                they&apos;re about what people care about — music, movies, elections,
+                culture, attention. Pretrend turns collective human judgment about those
+                things into a measurable, tradable signal.
+              </p>
+              <p className="text-muted-custom mb-0">
+                Vitruveo takes its name from Vitruvius, whose ideas Leonardo drew as a
+                human figure inscribed in a circle — humanity at the center of geometry.
+                Pretrend keeps that arrangement: the person stays in the middle; the
+                mathematics surrounds them.
+              </p>
+            </div>
+          </div>
+        </section>
+
         {/* Pretrend Roadmap */}
-        <section id="roadmap" className="section-padding bg-dark-custom">
+        <section id="roadmap" className="section-padding bg-dark-alt">
           <div className="container">
             <div className="text-center mb-5">
               <h2 className="display-6 fw-bold mb-3">2026 Roadmap</h2>
