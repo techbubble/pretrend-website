@@ -629,6 +629,83 @@ p {
   100% { opacity: 0; }
 }
 
+/* Figure row: chart flush left, AI insight card right */
+.wp-fig-row {
+  display: flex;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.wp-fig-row svg {
+  flex: 1 1 75%;
+  min-width: 0;
+}
+
+.wp-ai-card {
+  flex: 1 1 25%;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.wp-ai-head {
+  color: var(--vf-green-lighter);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-bottom: 0.6rem;
+}
+
+.wp-ai-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--vf-green-light);
+  animation: wp-ai-pulse 2s ease-in-out infinite;
+}
+
+.wp-ai-body {
+  position: relative;
+  flex: 1;
+}
+
+.wp-ai-ins {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 1rem;
+  line-height: 1.5;
+  opacity: 0;
+}
+
+.wp-ai-ins-a { animation: wpb-cap-a 20s linear infinite; }
+.wp-ai-ins-b { animation: wpb-cap-b 20s linear infinite; }
+.wp-ai-ins-c { animation: wpb-cap-c 20s linear infinite; }
+.wp-ai-ins-d { animation: wpb-cap-d 20s linear infinite; }
+
+@keyframes wp-ai-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+@media (max-width: 767px) {
+  .wp-fig-row {
+    flex-direction: column;
+  }
+
+  .wp-ai-body {
+    min-height: 8em;
+  }
+}
+
 /* Market replay tabs (Examples page) */
 .mr-tabs {
   display: flex;
@@ -881,7 +958,39 @@ p {
 }
 
 .mr-chart {
+  display: flex;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.mr-chart-plot {
   position: relative;
+  flex: 1 1 75%;
+  min-width: 0;
+}
+
+.mr-chart .wp-ai-card {
+  flex: 1 1 25%;
+}
+
+.mr-ai-text {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 1.05rem;
+  line-height: 1.55;
+  margin: 0;
+  animation: mr-row-in 0.35s ease-out;
+}
+
+@media (max-width: 767px) {
+  .mr-chart {
+    flex-direction: column;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mr-ai-text {
+    animation: none;
+  }
 }
 
 /* sits in the blank lower portion of the chart's lead-in area (x 60-230 of the 720 viewBox) */
@@ -928,8 +1037,14 @@ p {
   .wp-figure .wpb-win-label,
   .wp-figure .wpb-half,
   .wp-figure .wpb-full,
-  .wp-figure .wpb-trendlabel {
+  .wp-figure .wpb-trendlabel,
+  .wp-ai-ins,
+  .wp-ai-dot {
     animation: none;
+  }
+
+  .wp-ai-ins-d {
+    opacity: 1;
   }
 }
 

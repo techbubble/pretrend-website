@@ -3,6 +3,7 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { BUCKET_NAMES } from './data/market-replays';
 import { BUCKET_COLORS, BUCKET_DESCS, bucketRgba } from './bucket-meta';
+import { MarketReplay } from './market-replay';
 
 // Mirrors the wpb-* CSS timeline: 20s loop, market open at 10%, close at 70%.
 // A bet placed at minute t of the 30-minute market appears at (10 + 2t)% of the loop.
@@ -18,7 +19,11 @@ function fmtMoney(v) {
   return `$${v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
-export function BetPanel({ market, onReplay, children }) {
+function fmtPct(v, decimals = 2) {
+  return `${v >= 0 ? '+' : ''}${v.toFixed(decimals)}%`;
+}
+
+export function BetPanel({ market, onReplay }) {
   const [now, setNow] = useState(0);
   const [done, setDone] = useState(false);
 
@@ -94,6 +99,29 @@ export function BetPanel({ market, onReplay, children }) {
     pools[b.bucket] += b.amount;
   }
   const prices = units.map((u) => BASE * (1 + u / K));
+
+  // AI market insight commentary, staged to the replay timeline (see whitepaper 14.1)
+  const stage = now < OPEN ? 0 : now < 0.4 ? 1 : now < CLOSE ? 2 : 3;
+  const totalPool = pools.reduce((a, b) => a + b, 0);
+  const topPool = totalPool > 0 ? pools.indexOf(Math.max(...pools)) : null;
+  const winCount = market.bets.filter((b) => b.bucket === market.winner).length;
+  const q = market.thresholds;
+  const insight = [
+    `Pre-market. Fifteen minutes of lead-in BTC data are on screen for context. Thirty days of history set the Flat band at ${fmtPct(q[1])} to ${fmtPct(q[2])}, and every bucket opens at $0.20.`,
+    `Market open, ${market.tOpen}. Thresholds are locked and the trend line stays hidden until ${market.tMid}. ${
+      topPool !== null
+        ? `Early money favors ${BUCKET_NAMES[topPool]}, and its price is climbing.`
+        : 'Waiting for the first bets to arrive.'
+    }`,
+    `Trend revealed: ${fmtPct(market.trendHalf, 3)}, tracking ${BUCKET_NAMES[market.interim]}. The trajectory is public now, and late money tends to chase the visible band${
+      topPool !== null ? `; the largest pool is ${BUCKET_NAMES[topPool]}` : ''
+    }.`,
+    `Resolved: final trend ${fmtPct(market.trendFull, 3)}, ${BUCKET_NAMES[market.winner]} wins${
+      market.interim !== market.winner
+        ? `, a reversal from ${BUCKET_NAMES[market.interim]} at the reveal`
+        : ''
+    }. ${winCount} of ${market.bets.length} positions finish in the money and split ${fmtMoney(distributable)}.`,
+  ][stage];
   // flash a tile briefly when a bet lands in it
   const flashing = prices.map((_, i) =>
     visible.some((b) => b.bucket === i && now - betFrac(b.t) < 0.025)
@@ -122,16 +150,24 @@ export function BetPanel({ market, onReplay, children }) {
         })}
       </div>
       <div className="mr-chart">
-        {children}
-        {done && (
-          <button type="button" className="mr-replay-btn" onClick={onReplay} aria-label="Replay market">
-            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-              <path d="M2.5 8a5.5 5.5 0 1 0 1.6-3.9" />
-              <path d="M4.1 1.6v2.9h2.9" />
-            </svg>
-            Replay
-          </button>
-        )}
+        <div className="mr-chart-plot">
+          <MarketReplay market={market} now={now} />
+          {done && (
+            <button type="button" className="mr-replay-btn" onClick={onReplay} aria-label="Replay market">
+              <svg viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M2.5 8a5.5 5.5 0 1 0 1.6-3.9" />
+                <path d="M4.1 1.6v2.9h2.9" />
+              </svg>
+              Replay
+            </button>
+          )}
+        </div>
+        <div className="wp-ai-card">
+          <div className="wp-ai-head"><span className="wp-ai-dot" />AI Market Insight</div>
+          <div className="wp-ai-body">
+            <p className="mr-ai-text" key={stage}>{insight}</p>
+          </div>
+        </div>
       </div>
       <div className="mr-bets">
         <table>

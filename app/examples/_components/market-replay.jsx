@@ -21,7 +21,11 @@ function fmtPrice(v) {
   return `$${v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
-export function MarketReplay({ market }) {
+// timeline fractions shared with bet-panel: market open at 10%, close at 70% of the run
+const T_OPEN = 0.1;
+const T_CLOSE = 0.7;
+
+export function MarketReplay({ market, now = 1 }) {
   const { lead, market: closes, thresholds, fitFull, fitHalf, winner, interim } = market;
 
   // bucket band boundaries as fitted end-of-market prices
@@ -48,6 +52,13 @@ export function MarketReplay({ market }) {
     top: edges[i],
     bottom: edges[i + 1],
   }));
+
+  // live price marker at the head of the drawing feed line
+  const progress = Math.max(0, Math.min(1, (now - T_OPEN) / (T_CLOSE - T_OPEN)));
+  const headIdx = Math.round(progress * (closes.length - 1));
+  const headX = X1 + ((X2 - X1) * headIdx) / (closes.length - 1);
+  const headY = y(closes[headIdx]);
+  const priceLeft = headX > 460;
 
   const captions = [
     ['wpb-cap-a', 'Lead-in: 15 minutes of pre-market BTC price, context only'],
@@ -115,6 +126,26 @@ export function MarketReplay({ market }) {
       <line className="wpb-half" x1={X1} y1={y(fitHalf[0]).toFixed(1)} x2={xm} y2={y(fitHalf[1]).toFixed(1)} stroke="#2f8fd6" strokeWidth="2" strokeDasharray="6 5" />
       <line className="wpb-full" x1={X1} y1={y(fitFull[0]).toFixed(1)} x2={X2} y2={y(fitFull[1]).toFixed(1)} stroke="#2f8fd6" strokeWidth="2" strokeDasharray="6 5" />
       <circle className="wpb-full" cx={X2} cy={y(fitFull[1]).toFixed(1)} r="4" fill="#2f8fd6" stroke="#0a0f0a" strokeWidth="2" />
+      {now >= T_OPEN && (
+        <g>
+          <circle cx={headX.toFixed(1)} cy={headY.toFixed(1)} r="3.5" fill="#63a83a" stroke="#0a0f0a" strokeWidth="1.5" />
+          <text
+            x={(priceLeft ? headX - 9 : headX + 9).toFixed(1)}
+            y={(headY - 8).toFixed(1)}
+            textAnchor={priceLeft ? 'end' : 'start'}
+            fill="#a3d97a"
+            fontSize="13"
+            fontWeight="600"
+            fontFamily={FONT}
+            stroke="#0a0f0a"
+            strokeWidth="3"
+            paintOrder="stroke"
+            style={{ fontVariantNumeric: 'tabular-nums' }}
+          >
+            {fmtPrice(closes[headIdx])}
+          </text>
+        </g>
+      )}
       <text x={(X0 + X1) / 2} y={46} textAnchor="middle" fill="rgba(255,255,255,0.55)" fontSize="12" fontFamily={FONT}>
         Lead-in (15 min)
       </text>

@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { marketReplays, BUCKET_NAMES } from './data/market-replays';
 import { BUCKET_COLORS, bucketRgba } from './bucket-meta';
-import { MarketReplay } from './market-replay';
 import { BetPanel } from './bet-panel';
 
 function fmtPct(v) {
@@ -49,9 +48,7 @@ export function MarketTabs() {
       {/* plays once and holds the end state; key remounts SVG + panel together to restart in sync.
           Order inside the card: bucket price tiles, chart, bet table. */}
       <div className="card-dark wp-figure mr-once position-relative p-3 p-md-4" key={`${m.id}-${run}`}>
-        <BetPanel market={m} onReplay={() => setRun((r) => r + 1)}>
-          <MarketReplay market={m} />
-        </BetPanel>
+        <BetPanel market={m} onReplay={() => setRun((r) => r + 1)} />
       </div>
       <div className="mr-stats">
         {stats.map(([label, value, color]) => (
