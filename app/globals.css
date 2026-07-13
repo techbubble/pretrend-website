@@ -446,6 +446,206 @@ p {
   overflow-x: auto;
 }
 
+.wp-doc .wp-figure {
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.5rem;
+  padding: 1.25rem 1.25rem 0.75rem;
+  margin: 1.25rem 0;
+}
+
+.wp-doc .wp-caption {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.85rem;
+  margin: 0.75rem 0 0.25rem;
+  text-align: center;
+}
+
+/* Animated whitepaper figure: 12s loop — lead-in, market open, draw, 50% reveal, close */
+.wp-figure .wpa-feed {
+  stroke-dasharray: 1;
+  animation: wpa-feed-draw 12s linear infinite;
+}
+
+.wp-figure .wpa-trend {
+  animation: wpa-trend-reveal 12s linear infinite;
+}
+
+.wp-figure .wpa-feed-label {
+  animation: wpa-feed-label 12s linear infinite;
+}
+
+.wp-figure .wpa-trend-label {
+  animation: wpa-trend-label 12s linear infinite;
+}
+
+.wp-figure .wpa-cap {
+  opacity: 0;
+}
+
+.wp-figure .wpa-cap-a { animation: wpa-cap-a 12s linear infinite; }
+.wp-figure .wpa-cap-b { animation: wpa-cap-b 12s linear infinite; }
+.wp-figure .wpa-cap-c { animation: wpa-cap-c 12s linear infinite; }
+.wp-figure .wpa-cap-d { animation: wpa-cap-d 12s linear infinite; }
+
+@keyframes wpa-feed-draw {
+  0%, 12.5% { stroke-dashoffset: 1; }
+  75%, 100% { stroke-dashoffset: 0; }
+}
+
+@keyframes wpa-trend-reveal {
+  0%, 43.75% { clip-path: inset(0 50% 0 0); opacity: 0; }
+  46.5% { opacity: 1; }
+  75%, 100% { clip-path: inset(0 0 0 0); opacity: 1; }
+}
+
+@keyframes wpa-feed-label {
+  0%, 70% { opacity: 0; }
+  73%, 100% { opacity: 1; }
+}
+
+@keyframes wpa-trend-label {
+  0%, 43.75% { opacity: 0; }
+  46.5%, 100% { opacity: 1; }
+}
+
+@keyframes wpa-cap-a {
+  0%, 10.5% { opacity: 1; }
+  12.5%, 100% { opacity: 0; }
+}
+
+@keyframes wpa-cap-b {
+  0%, 12.5% { opacity: 0; }
+  14.5%, 41.75% { opacity: 1; }
+  43.75%, 100% { opacity: 0; }
+}
+
+@keyframes wpa-cap-c {
+  0%, 43.75% { opacity: 0; }
+  45.75%, 73% { opacity: 1; }
+  75%, 100% { opacity: 0; }
+}
+
+@keyframes wpa-cap-d {
+  0%, 75% { opacity: 0; }
+  77%, 98% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Animated live-market figure (Appendix B): 20s loop — lead-in, open, draw, 15-min reveal, result */
+.wp-figure .wpb-feed {
+  stroke-dasharray: 1;
+  animation: wpb-feed-draw 20s linear infinite;
+}
+
+.wp-figure .wpb-bands {
+  animation: wpb-bands 20s linear infinite;
+}
+
+.wp-figure .wpb-win {
+  fill: rgba(122, 190, 77, 0.14);
+  animation: wpb-win-fill 20s linear infinite;
+}
+
+.wp-figure .wpb-win-label {
+  fill: #a3d97a;
+  animation: wpb-win-label 20s linear infinite;
+}
+
+.wp-figure .wpb-half {
+  opacity: 0;
+  animation: wpb-half 20s linear infinite;
+}
+
+.wp-figure .wpb-full {
+  animation: wpb-full 20s linear infinite;
+}
+
+.wp-figure .wpb-trendlabel {
+  animation: wpb-trendlabel 20s linear infinite;
+}
+
+.wp-figure .wpb-cap-a { animation: wpb-cap-a 20s linear infinite; }
+.wp-figure .wpb-cap-b { animation: wpb-cap-b 20s linear infinite; }
+.wp-figure .wpb-cap-c { animation: wpb-cap-c 20s linear infinite; }
+.wp-figure .wpb-cap-d { animation: wpb-cap-d 20s linear infinite; }
+
+@keyframes wpb-feed-draw {
+  0%, 10% { stroke-dashoffset: 1; }
+  70%, 100% { stroke-dashoffset: 0; }
+}
+
+@keyframes wpb-bands {
+  0%, 10% { opacity: 0; }
+  13%, 100% { opacity: 1; }
+}
+
+@keyframes wpb-win-fill {
+  0%, 70% { fill: rgba(255, 255, 255, 0.03); }
+  74%, 100% { fill: rgba(122, 190, 77, 0.14); }
+}
+
+@keyframes wpb-win-label {
+  0%, 70% { fill: rgba(255, 255, 255, 0.55); }
+  74%, 100% { fill: #a3d97a; }
+}
+
+@keyframes wpb-half {
+  0%, 40% { opacity: 0; }
+  42%, 70% { opacity: 1; }
+  73%, 100% { opacity: 0; }
+}
+
+@keyframes wpb-full {
+  0%, 70% { opacity: 0; }
+  73%, 100% { opacity: 1; }
+}
+
+@keyframes wpb-trendlabel {
+  0%, 40% { opacity: 0; }
+  43%, 100% { opacity: 1; }
+}
+
+@keyframes wpb-cap-a {
+  0%, 8% { opacity: 1; }
+  10%, 100% { opacity: 0; }
+}
+
+@keyframes wpb-cap-b {
+  0%, 10% { opacity: 0; }
+  12%, 38% { opacity: 1; }
+  40%, 100% { opacity: 0; }
+}
+
+@keyframes wpb-cap-c {
+  0%, 40% { opacity: 0; }
+  42%, 68% { opacity: 1; }
+  70%, 100% { opacity: 0; }
+}
+
+@keyframes wpb-cap-d {
+  0%, 70% { opacity: 0; }
+  72%, 98% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wp-figure .wpa-feed,
+  .wp-figure .wpa-trend,
+  .wp-figure .wpa-feed-label,
+  .wp-figure .wpa-trend-label,
+  .wp-figure .wpa-cap,
+  .wp-figure .wpb-feed,
+  .wp-figure .wpb-bands,
+  .wp-figure .wpb-win,
+  .wp-figure .wpb-win-label,
+  .wp-figure .wpb-half,
+  .wp-figure .wpb-full,
+  .wp-figure .wpb-trendlabel {
+    animation: none;
+  }
+}
+
 /* Compatibility shims for components ported from the Vitruveo site */
 .text-vtru-green {
   color: var(--vf-green-lighter) !important;
