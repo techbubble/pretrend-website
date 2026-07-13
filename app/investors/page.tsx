@@ -8,9 +8,8 @@ export const metadata: Metadata = {
 };
 
 const ownership = [
-  { label: 'Team & Investors', pct: 78, boxes: 39, color: '#3f6d2c' },
+  { label: 'Team & Investors', pct: 80, boxes: 40, color: '#3f6d2c' },
   { label: 'Vitruveo Community', pct: 20, boxes: 10, color: '#8b5cf6' },
-  { label: 'Notaries', pct: 2, boxes: 1, color: '#2f8fd6' },
 ];
 
 function OwnershipGrid() {
@@ -75,12 +74,9 @@ export default function InvestorsPage() {
                 </a>.
               </p>
               <p className="text-muted-custom mb-0">
-                Whether Pretrend ultimately becomes an equity play or a token play is a
-                decision we&apos;re deliberately keeping open — and one we expect our
-                investors to largely drive. The Seed round will be structured accordingly, as
-                either a SAFE or a SAFT (Simple Agreement for Future Equity / Token). If the
-                round lands on a SAFE, the Vitruveo community&apos;s stake will likely be
-                held through a syndicate.
+                The Seed round will be structured as a SAFT (Simple Agreement for Future
+                Tokens) — Pretrend is a token play, and investors will hold rights to the
+                protocol&apos;s token rather than equity.
               </p>
             </div>
           </div>
@@ -109,8 +105,7 @@ export default function InvestorsPage() {
               </p>
               <p className="text-muted-custom mb-0">
                 We have reserved 20% of Pretrend&apos;s ownership for the Vitruveo community.
-                The remainder is held by the team and investors, with a dedicated share for
-                the notaries who keep the oracle running.
+                The remaining 80% is held by the team and investors.
               </p>
             </div>
             <div className="card-dark p-4 p-lg-5">
