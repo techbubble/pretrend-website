@@ -4,10 +4,11 @@ import Footer from '../components/Footer';
 import { TrendHeader } from './_components/trend-header';
 import { TrendExample } from './_components/trend-example';
 import { TrendInfo } from './_components/trend-info';
+import { MarketTabs } from './_components/market-tabs';
 
 export const metadata: Metadata = {
   title: "Examples | Pretrend Protocol",
-  description: "Live examples of the Trend precompile that powers Pretrend — run OLS regression and volatility analysis on real datasets directly against the Vitruveo blockchain.",
+  description: "Replays of real 30-minute BTC markets resolved through the Pretrend protocol, plus live examples of the Trend precompile running OLS regression and volatility analysis on-chain.",
 };
 
 export default function ExamplesPage() {
@@ -15,13 +16,30 @@ export default function ExamplesPage() {
     <>
       <Header />
       <main>
-        {/* Intro: how trend computation is built into the protocol */}
+        {/* Real market replays: five 30-min BTC markets, one winner per bucket */}
         <section className="section-padding bg-dark-custom" style={{ paddingTop: '140px', paddingBottom: '40px' }}>
           <div className="container">
             <div className="text-center mb-5">
               <h1 className="display-4 fw-bold mb-3">
-                Trend, <span className="text-gradient">Built Into the Protocol</span>
+                Real Markets, <span className="text-gradient">Replayed</span>
               </h1>
+              <p className="lead text-muted-custom" style={{ maxWidth: '1000px', margin: '0 auto', textWrap: 'balance' }}>
+                Five real 30-minute BTC markets from June and July 2026, replayed from Binance
+                data. Thresholds locked from 30 days of history at each open — and each of the
+                five buckets wins once.
+              </p>
+            </div>
+            <MarketTabs />
+          </div>
+        </section>
+
+        {/* Intro: how trend computation is built into the protocol */}
+        <section className="section-padding bg-dark-alt" style={{ paddingTop: '60px', paddingBottom: '40px' }}>
+          <div className="container">
+            <div className="text-center mb-5">
+              <h2 className="display-5 fw-bold mb-3">
+                Trend, <span className="text-gradient">Built Into the Protocol</span>
+              </h2>
               <p className="lead text-muted-custom" style={{ maxWidth: '820px', margin: '0 auto' }}>
                 Every Pretrend market resolves through statistics computed by the blockchain
                 itself — not by an off-chain service you have to trust.

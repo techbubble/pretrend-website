@@ -543,12 +543,12 @@ p {
 }
 
 .wp-figure .wpb-win {
-  fill: rgba(122, 190, 77, 0.14);
+  fill: var(--mr-win-fill, rgba(122, 190, 77, 0.14));
   animation: wpb-win-fill 20s linear infinite;
 }
 
 .wp-figure .wpb-win-label {
-  fill: #a3d97a;
+  fill: var(--mr-win-ink, #a3d97a);
   animation: wpb-win-label 20s linear infinite;
 }
 
@@ -581,13 +581,13 @@ p {
 }
 
 @keyframes wpb-win-fill {
-  0%, 70% { fill: rgba(255, 255, 255, 0.03); }
-  74%, 100% { fill: rgba(122, 190, 77, 0.14); }
+  0%, 70% { fill: var(--mr-band-fill, rgba(255, 255, 255, 0.03)); }
+  74%, 100% { fill: var(--mr-win-fill, rgba(122, 190, 77, 0.14)); }
 }
 
 @keyframes wpb-win-label {
   0%, 70% { fill: rgba(255, 255, 255, 0.55); }
-  74%, 100% { fill: #a3d97a; }
+  74%, 100% { fill: var(--mr-win-ink, #a3d97a); }
 }
 
 @keyframes wpb-half {
@@ -627,6 +627,293 @@ p {
   0%, 70% { opacity: 0; }
   72%, 98% { opacity: 1; }
   100% { opacity: 0; }
+}
+
+/* Market replay tabs (Examples page) */
+.mr-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+}
+
+.mr-tab {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.7);
+  border-radius: 999px;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.9rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.mr-tab:hover {
+  border-color: rgba(122, 190, 77, 0.5);
+  color: #fff;
+}
+
+.mr-tab.active {
+  background: rgba(122, 190, 77, 0.15);
+  border-color: var(--vf-green-light);
+  color: #fff;
+}
+
+.mr-tab-bucket {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.85em;
+  font-weight: 700;
+  margin-left: 0.45rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.mr-tab.active .mr-tab-bucket {
+  color: var(--vf-green-lighter);
+}
+
+.mr-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 1.25rem;
+}
+
+.mr-stat {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  text-align: center;
+}
+
+.mr-stat-label {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.mr-stat-value {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Live bucket prices during a replay */
+.mr-prices {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 575px) {
+  .mr-prices {
+    grid-template-columns: repeat(5, minmax(96px, 1fr));
+    overflow-x: auto;
+  }
+}
+
+.mr-price-tile {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.5rem;
+  padding: 0.5rem 0.4rem;
+  text-align: center;
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.mr-price-tile.flash {
+  border-color: rgba(122, 190, 77, 0.6);
+  background: rgba(122, 190, 77, 0.08);
+}
+
+.mr-price-tile.winner {
+  border-color: var(--vf-green-light);
+  background: rgba(122, 190, 77, 0.14);
+}
+
+.mr-price-bucket {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.mr-price-value {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 1.05rem;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.mr-price-tile.winner .mr-price-value {
+  color: var(--vf-green-lighter);
+}
+
+.mr-price-desc {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.68rem;
+  line-height: 1.25;
+  margin: 0.1rem 0 0.25rem;
+}
+
+.mr-price-pool {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Bet feed table */
+.mr-bets {
+  margin-top: 1rem;
+  max-height: 340px;
+  min-height: 180px;
+  overflow-y: auto;
+}
+
+.mr-bets table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.mr-bets th {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  font-weight: 600;
+  text-align: left;
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  position: sticky;
+  top: 0;
+  background: #111811;
+}
+
+.mr-bets td {
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.mr-bets .num {
+  text-align: right;
+}
+
+.mr-bets tbody tr {
+  animation: mr-row-in 0.35s ease-out;
+}
+
+.mr-bets tr.won td {
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.mr-bets tr.lost td {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.mr-bets tr.empty td {
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+  padding: 1.5rem 0.6rem;
+}
+
+.mr-outcome-pending {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.mr-outcome-loss {
+  color: rgba(248, 113, 113, 0.8);
+}
+
+.mr-bets-note {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.82rem;
+  text-align: center;
+  margin-top: 0.6rem;
+  animation: mr-row-in 0.35s ease-out;
+}
+
+.mr-won-tag {
+  color: var(--vf-green-lighter);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  margin-left: 0.5rem;
+  border: 1px solid rgba(122, 190, 77, 0.5);
+  border-radius: 999px;
+  padding: 0.05rem 0.45rem;
+}
+
+@keyframes mr-row-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Play-once mode (Examples replays): run the 20s timeline a single time and hold */
+.mr-once .wpb-feed,
+.mr-once .wpb-bands,
+.mr-once .wpb-win,
+.mr-once .wpb-win-label,
+.mr-once .wpb-half,
+.mr-once .wpb-full,
+.mr-once .wpb-trendlabel,
+.mr-once .wpa-cap {
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+/* final caption stays visible when holding the end state */
+.mr-once .wpb-cap-d {
+  animation-name: wpb-cap-d-hold;
+}
+
+@keyframes wpb-cap-d-hold {
+  0%, 70% { opacity: 0; }
+  72%, 100% { opacity: 1; }
+}
+
+.mr-chart {
+  position: relative;
+}
+
+/* sits in the blank lower portion of the chart's lead-in area (x 60-230 of the 720 viewBox) */
+.mr-replay-btn {
+  position: absolute;
+  left: 20%;
+  bottom: 30%;
+  transform: translateX(-50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  background: rgba(122, 190, 77, 0.12);
+  border: 1px solid rgba(122, 190, 77, 0.5);
+  color: var(--vf-green-lighter);
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem;
+  font-size: 0.82rem;
+  font-family: inherit;
+  cursor: pointer;
+  animation: mr-row-in 0.35s ease-out;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.mr-replay-btn:hover {
+  background: rgba(122, 190, 77, 0.22);
+  border-color: var(--vf-green-light);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mr-bets tbody tr {
+    animation: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
