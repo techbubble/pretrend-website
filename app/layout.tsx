@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Titillium_Web } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 import "./globals.css";
 
 const titillium = Titillium_Web({
@@ -30,6 +31,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${titillium.className} antialiased`}>
         {children}
+        <Analytics />
       </body>
     </html>
   );
