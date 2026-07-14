@@ -706,6 +706,42 @@ p {
   }
 }
 
+/* OLS explainer page */
+.ols-formula {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 1rem;
+  color: var(--vf-green-lighter);
+  background: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 0.5rem;
+  padding: 0.85rem 1.25rem;
+  margin: 0.75rem 0;
+  overflow-x: auto;
+}
+
+.ols-table {
+  width: 100%;
+  margin: 1.25rem 0;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.ols-table th {
+  background: rgba(122, 190, 77, 0.08);
+  color: var(--vf-green-lighter);
+  font-weight: 600;
+  text-align: left;
+  padding: 0.6rem 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ols-table td {
+  padding: 0.6rem 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.65);
+}
+
 /* Market replay tabs (Examples page) */
 .mr-tabs {
   display: flex;

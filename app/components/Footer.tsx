@@ -23,6 +23,9 @@ export default function Footer({ disclaimer }: { disclaimer?: string }) {
             <a href="/examples" className="me-4">
               Examples
             </a>
+            <a href="/ols" className="me-4">
+              OLS
+            </a>
             <a href="/investors" className="me-4">
               Investors
             </a>
