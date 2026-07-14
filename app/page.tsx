@@ -50,7 +50,7 @@ const BucketDistributionSVG = () => (
       { x: 220, label: 'BEAR', color: '#f97316', height: 90, pct: '-8.2% to -2.1%' },
       { x: 360, label: 'FLAT', color: '#a3a3a3', height: 120, pct: '-2.1% to +2.3%' },
       { x: 500, label: 'BULL', color: '#4ade80', height: 100, pct: '+2.3% to +9.1%' },
-      { x: 640, label: 'MOON', color: '#7abe4d', height: 50, pct: '> +9.1%' },
+      { x: 640, label: 'MOON', color: '#8b5cf6', height: 50, pct: '> +9.1%' },
     ].map((b) => (
       <g key={b.label}>
         <rect x={b.x} y={180 - b.height} width="80" height={b.height} rx="4"
@@ -635,7 +635,7 @@ export default function PretrendPage() {
                 { name: 'Bear', desc: 'Moderate decline', range: '20th to 40th percentile', color: '#f97316' },
                 { name: 'Flat', desc: 'Minimal change', range: '40th to 60th percentile', color: '#a3a3a3' },
                 { name: 'Bull', desc: 'Moderate growth', range: '60th to 80th percentile', color: '#4ade80' },
-                { name: 'Moon', desc: 'Significant growth', range: 'Above 80th percentile', color: '#7abe4d' },
+                { name: 'Moon', desc: 'Significant growth', range: 'Above 80th percentile', color: '#8b5cf6' },
               ].map((bucket) => (
                 <div key={bucket.name} className="col">
                   <div className="card-dark p-3 h-100 text-center">

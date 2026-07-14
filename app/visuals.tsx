@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 
-const BUCKET_COLORS = ['#ef4444', '#f97316', '#a3a3a3', '#4ade80', '#7abe4d'];
+const BUCKET_COLORS = ['#ef4444', '#f97316', '#a3a3a3', '#4ade80', '#8b5cf6'];
 
 // Mini five-bucket bar chart that cycles its highlighted outcome for live energy.
 export function AnimatedBuckets({ start = 0 }: { start?: number }) {

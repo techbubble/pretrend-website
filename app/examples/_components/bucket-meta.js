@@ -1,5 +1,5 @@
 // Bucket identity shared with the home page (see app/page.tsx Five Outcome Buckets).
-export const BUCKET_COLORS = ['#ef4444', '#f97316', '#a3a3a3', '#4ade80', '#7abe4d'];
+export const BUCKET_COLORS = ['#ef4444', '#f97316', '#a3a3a3', '#4ade80', '#8b5cf6'];
 
 export const BUCKET_DESCS = [
   'Significant decline',
