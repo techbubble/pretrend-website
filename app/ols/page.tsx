@@ -159,7 +159,7 @@ export default function OlsPage() {
               <h2 className="h3 fw-bold mb-3">Hard to fool</h2>
               <p className="text-muted-custom">
                 Because every point carries equal weight, moving the trend requires moving the
-                market — not the print. A rule that only reads the close can be flipped by a
+                market — not the price. A rule that only reads the close can be flipped by a
                 single trade timed to the bell. Try it on the July 7 market:
               </p>
             </div>
@@ -167,7 +167,7 @@ export default function OlsPage() {
               <SpikeDemo />
             </div>
             <p className="text-muted-custom text-center mt-3 mb-0" style={{ maxWidth: '820px', margin: '0 auto' }}>
-              A +0.3% spoofed final print more than doubles the two-point reading and would hand
+              A +0.3% spoofed final price more than doubles the two-point reading and would hand
               the market to Moon. The OLS trend moves a few hundredths of a percent and stays in
               Bull. To shift a regression you must hold the price away from its path for many
               observations against real order flow — an attack that costs real money and is
@@ -220,7 +220,7 @@ export default function OlsPage() {
                   </tr>
                   <tr>
                     <td>High minus low</td>
-                    <td>2 extreme prints</td>
+                    <td>2 extreme prices</td>
                     <td>A single wick sets the outcome; says nothing about direction</td>
                   </tr>
                   <tr>

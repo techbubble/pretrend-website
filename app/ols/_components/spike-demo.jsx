@@ -43,7 +43,7 @@ export function SpikeDemo() {
 
   return (
     <div>
-      <svg viewBox="0 0 720 230" role="img" aria-label="Effect of a spoofed final print on close-versus-open versus the OLS trend" style={{ width: '100%', height: 'auto', display: 'block' }}>
+      <svg viewBox="0 0 720 230" role="img" aria-label="Effect of a spoofed final price on close-versus-open versus the OLS trend" style={{ width: '100%', height: 'auto', display: 'block' }}>
         <line x1={PX0} y1={PY1} x2={PX1} y2={PY1} stroke="rgba(255,255,255,0.18)" strokeWidth="1" />
         <polyline points={pts} fill="none" stroke="#63a83a" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
         <line
@@ -68,7 +68,7 @@ export function SpikeDemo() {
         <circle cx={px(n - 1)} cy={py(ys[n - 1])} r="5" fill={spiked ? '#ef4444' : '#63a83a'} stroke="#0a0f0a" strokeWidth="1.5" />
         {spiked && (
           <text x={px(n - 1) - 10} y={py(ys[n - 1]) - 10} textAnchor="end" fill="#ef4444" fontSize="12" fontWeight="600" fontFamily={FONT}>
-            spoofed final print (+0.3%)
+            spoofed final price (+0.3%)
           </text>
         )}
         <text x={px(2)} y={py(fit.a) - 10} fill="#2f8fd6" fontSize="12" fontFamily={FONT}>
@@ -81,7 +81,7 @@ export function SpikeDemo() {
 
       <div className="d-flex justify-content-center mt-2 mb-2">
         <button type="button" className="btn btn-primary btn-sm" onClick={() => setSpiked((s) => !s)}>
-          {spiked ? 'Remove the fake print' : 'Inject a fake final print (+0.3%)'}
+          {spiked ? 'Remove the fake price' : 'Inject a fake final price (+0.3%)'}
         </button>
       </div>
 
