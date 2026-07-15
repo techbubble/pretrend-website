@@ -62,6 +62,9 @@ export default function Header() {
               <a className="nav-link" href="/ols">OLS</a>
             </li>
             <li className="nav-item">
+              <a className="nav-link" href="/preview">Preview</a>
+            </li>
+            <li className="nav-item">
               <a className="nav-link" href="/investors">Investors</a>
             </li>
           </ul>
