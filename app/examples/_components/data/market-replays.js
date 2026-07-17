@@ -12,7 +12,6 @@ export const marketReplays = [
     "fullDateLabel": "June 3, 2026",
     "windowLabel": "19:30-20:00 UTC",
     "tOpen": "19:30 UTC",
-    "tMid": "19:45",
     "tClose": "20:00",
     "thresholds": [
       -0.1705,
@@ -73,123 +72,117 @@ export const marketReplays = [
       65824.97,
       65473.04
     ],
-    "fitHalf": [
-      65668.73,
-      65819.33
-    ],
     "trendFull": -0.535,
-    "trendHalf": 0.229,
-    "interim": 4,
+    "interim": 0,
     "winner": 0,
     "bets": [
       {
         "t": 1,
         "bucket": 0,
-        "name": "Omar",
-        "amount": 50,
-        "price": 0.2,
-        "units": 250.0,
+        "name": "Cora",
+        "amount": 25,
+        "price": 0.169,
+        "units": 147.8,
         "time": "19:31"
       },
       {
         "t": 2,
-        "bucket": 2,
-        "name": "Diego",
-        "amount": 50,
-        "price": 0.2,
-        "units": 250.0,
+        "bucket": 0,
+        "name": "Ravi",
+        "amount": 150,
+        "price": 0.317,
+        "units": 472.7,
         "time": "19:32"
       },
       {
-        "t": 4,
-        "bucket": 3,
-        "name": "Noor",
-        "amount": 30,
-        "price": 0.2,
-        "units": 150.0,
-        "time": "19:34"
+        "t": 2,
+        "bucket": 1,
+        "name": "Beto",
+        "amount": 75,
+        "price": 0.239,
+        "units": 314.0,
+        "time": "19:32"
       },
       {
-        "t": 9,
+        "t": 6,
+        "bucket": 3,
+        "name": "Sam",
+        "amount": 50,
+        "price": 0.355,
+        "units": 140.8,
+        "time": "19:36"
+      },
+      {
+        "t": 7,
         "bucket": 0,
-        "name": "Marco",
-        "amount": 10,
-        "price": 0.3,
-        "units": 33.3,
-        "time": "19:39"
+        "name": "Nadia",
+        "amount": 100,
+        "price": 0.597,
+        "units": 167.6,
+        "time": "19:37"
+      },
+      {
+        "t": 8,
+        "bucket": 2,
+        "name": "Rhea",
+        "amount": 100,
+        "price": 0.447,
+        "units": 223.8,
+        "time": "19:38"
       },
       {
         "t": 10,
-        "bucket": 3,
-        "name": "Aisha",
-        "amount": 100,
-        "price": 0.26,
-        "units": 384.6,
+        "bucket": 2,
+        "name": "Zoe",
+        "amount": 50,
+        "price": 0.581,
+        "units": 86.1,
         "time": "19:40"
       },
       {
         "t": 12,
-        "bucket": 2,
-        "name": "Lena",
-        "amount": 20,
-        "price": 0.3,
-        "units": 66.7,
+        "bucket": 1,
+        "name": "Piotr",
+        "amount": 40,
+        "price": 0.682,
+        "units": 58.7,
         "time": "19:42"
       },
       {
-        "t": 13,
-        "bucket": 1,
-        "name": "Zoe",
-        "amount": 60,
-        "price": 0.2,
-        "units": 300.0,
-        "time": "19:43"
-      },
-      {
-        "t": 22,
-        "bucket": 4,
-        "name": "Ken",
-        "amount": 15,
-        "price": 0.2,
-        "units": 75.0,
-        "time": "19:52"
-      },
-      {
-        "t": 24,
+        "t": 16,
         "bucket": 2,
-        "name": "Hana",
-        "amount": 40,
-        "price": 0.327,
-        "units": 122.4,
-        "time": "19:54"
+        "name": "Tara",
+        "amount": 30,
+        "price": 0.827,
+        "units": 36.3,
+        "time": "19:46"
       },
       {
-        "t": 26,
-        "bucket": 4,
-        "name": "Vera",
-        "amount": 50,
-        "price": 0.23,
-        "units": 217.4,
-        "time": "19:56"
-      },
-      {
-        "t": 27,
-        "bucket": 4,
-        "name": "Maya",
+        "t": 18,
+        "bucket": 0,
+        "name": "Jade",
         "amount": 25,
-        "price": 0.317,
-        "units": 78.9,
-        "time": "19:57"
+        "price": 1.0,
+        "units": 25.0,
+        "time": "19:48"
+      },
+      {
+        "t": 20,
+        "bucket": 0,
+        "name": "Yuki",
+        "amount": 30,
+        "price": 1.0,
+        "units": 30.0,
+        "time": "19:50"
       }
     ],
-    "finalPrices": [
-      0.313,
-      0.32,
-      0.376,
-      0.414,
-      0.349
+    "bounty": 675,
+    "fit80": [
+      65779.09,
+      65620.67
     ],
-    "bounty": 450
+    "trend80": -0.241,
+    "tReveal": "19:54"
   },
   {
     "id": "jun04-1430",
@@ -197,7 +190,6 @@ export const marketReplays = [
     "fullDateLabel": "June 4, 2026",
     "windowLabel": "14:30-15:00 UTC",
     "tOpen": "14:30 UTC",
-    "tMid": "14:45",
     "tClose": "15:00",
     "thresholds": [
       -0.1786,
@@ -258,87 +250,81 @@ export const marketReplays = [
       63999.76,
       63892.26
     ],
-    "fitHalf": [
-      63984.07,
-      63973.64
-    ],
     "trendFull": -0.168,
-    "trendHalf": -0.016,
-    "interim": 2,
+    "interim": 0,
     "winner": 1,
     "bets": [
       {
-        "t": 5,
-        "bucket": 1,
-        "name": "Nadia",
+        "t": 3,
+        "bucket": 3,
+        "name": "Ken",
         "amount": 30,
-        "price": 0.2,
-        "units": 150.0,
+        "price": 0.239,
+        "units": 125.3,
+        "time": "14:33"
+      },
+      {
+        "t": 3,
+        "bucket": 1,
+        "name": "Tara",
+        "amount": 150,
+        "price": 0.307,
+        "units": 488.5,
+        "time": "14:33"
+      },
+      {
+        "t": 5,
+        "bucket": 2,
+        "name": "Elif",
+        "amount": 15,
+        "price": 0.299,
+        "units": 50.2,
         "time": "14:35"
       },
       {
-        "t": 7,
+        "t": 6,
+        "bucket": 2,
+        "name": "Owen",
+        "amount": 10,
+        "price": 0.353,
+        "units": 28.3,
+        "time": "14:36"
+      },
+      {
+        "t": 12,
+        "bucket": 2,
+        "name": "Mira",
+        "amount": 40,
+        "price": 0.598,
+        "units": 66.9,
+        "time": "14:42"
+      },
+      {
+        "t": 15,
         "bucket": 1,
-        "name": "Priya",
-        "amount": 25,
-        "price": 0.26,
-        "units": 96.2,
-        "time": "14:37"
-      },
-      {
-        "t": 8,
-        "bucket": 2,
-        "name": "Aisha",
+        "name": "Luis",
         "amount": 100,
-        "price": 0.2,
-        "units": 500.0,
-        "time": "14:38"
+        "price": 0.856,
+        "units": 116.9,
+        "time": "14:45"
       },
       {
-        "t": 11,
-        "bucket": 2,
-        "name": "Theo",
-        "amount": 60,
-        "price": 0.4,
-        "units": 150.0,
-        "time": "14:41"
-      },
-      {
-        "t": 18,
-        "bucket": 2,
-        "name": "Ken",
-        "amount": 30,
-        "price": 0.46,
-        "units": 65.2,
-        "time": "14:48"
-      },
-      {
-        "t": 21,
-        "bucket": 2,
-        "name": "Umar",
-        "amount": 30,
-        "price": 0.486,
-        "units": 61.7,
-        "time": "14:51"
-      },
-      {
-        "t": 28,
-        "bucket": 2,
-        "name": "Zoe",
-        "amount": 50,
-        "price": 0.511,
-        "units": 97.9,
-        "time": "14:58"
+        "t": 16,
+        "bucket": 3,
+        "name": "Ivan",
+        "amount": 40,
+        "price": 0.763,
+        "units": 52.4,
+        "time": "14:46"
       }
     ],
-    "finalPrices": [
-      0.2,
-      0.298,
-      0.55,
-      0.2,
-      0.2
+    "bounty": 385,
+    "fit80": [
+      64015.24,
+      63885.0
     ],
-    "bounty": 325
+    "trend80": -0.203,
+    "tReveal": "14:54"
   },
   {
     "id": "jun08-1700",
@@ -346,7 +332,6 @@ export const marketReplays = [
     "fullDateLabel": "June 8, 2026",
     "windowLabel": "17:00-17:30 UTC",
     "tOpen": "17:00 UTC",
-    "tMid": "17:15",
     "tClose": "17:30",
     "thresholds": [
       -0.1995,
@@ -407,141 +392,135 @@ export const marketReplays = [
       63416.02,
       63560.0
     ],
-    "fitHalf": [
-      63474.31,
-      63426.66
-    ],
     "trendFull": 0.227,
-    "trendHalf": -0.075,
-    "interim": 1,
+    "interim": 3,
     "winner": 4,
     "bets": [
       {
-        "t": 3,
-        "bucket": 0,
-        "name": "Sam",
-        "amount": 10,
-        "price": 0.2,
-        "units": 50.0,
-        "time": "17:03"
+        "t": 2,
+        "bucket": 1,
+        "name": "Sana",
+        "amount": 60,
+        "price": 0.229,
+        "units": 261.9,
+        "time": "17:02"
       },
       {
         "t": 4,
-        "bucket": 4,
-        "name": "Aisha",
-        "amount": 20,
-        "price": 0.2,
-        "units": 100.0,
+        "bucket": 1,
+        "name": "Anika",
+        "amount": 60,
+        "price": 0.381,
+        "units": 157.6,
         "time": "17:04"
       },
       {
         "t": 5,
-        "bucket": 1,
-        "name": "Priya",
-        "amount": 30,
-        "price": 0.2,
-        "units": 150.0,
+        "bucket": 2,
+        "name": "Diego",
+        "amount": 60,
+        "price": 0.326,
+        "units": 183.8,
         "time": "17:05"
       },
       {
         "t": 6,
-        "bucket": 0,
-        "name": "Cora",
-        "amount": 50,
-        "price": 0.22,
-        "units": 227.3,
+        "bucket": 4,
+        "name": "Jade",
+        "amount": 60,
+        "price": 0.36,
+        "units": 166.5,
         "time": "17:06"
       },
       {
-        "t": 8,
-        "bucket": 0,
-        "name": "Beto",
+        "t": 7,
+        "bucket": 2,
+        "name": "Vera",
         "amount": 20,
-        "price": 0.311,
-        "units": 64.3,
+        "price": 0.447,
+        "units": 44.8,
+        "time": "17:07"
+      },
+      {
+        "t": 8,
+        "bucket": 1,
+        "name": "Tessa",
+        "amount": 150,
+        "price": 0.592,
+        "units": 253.2,
         "time": "17:08"
+      },
+      {
+        "t": 9,
+        "bucket": 2,
+        "name": "Omar",
+        "amount": 60,
+        "price": 0.549,
+        "units": 109.3,
+        "time": "17:09"
+      },
+      {
+        "t": 10,
+        "bucket": 2,
+        "name": "Mira",
+        "amount": 10,
+        "price": 0.608,
+        "units": 16.5,
+        "time": "17:10"
       },
       {
         "t": 11,
         "bucket": 0,
-        "name": "Noor",
-        "amount": 40,
-        "price": 0.337,
-        "units": 118.8,
+        "name": "Sam",
+        "amount": 25,
+        "price": 0.523,
+        "units": 47.8,
         "time": "17:11"
       },
       {
-        "t": 12,
-        "bucket": 2,
-        "name": "Nadia",
-        "amount": 75,
-        "price": 0.2,
-        "units": 375.0,
-        "time": "17:12"
+        "t": 13,
+        "bucket": 4,
+        "name": "Zoe",
+        "amount": 15,
+        "price": 0.661,
+        "units": 22.7,
+        "time": "17:13"
+      },
+      {
+        "t": 13,
+        "bucket": 3,
+        "name": "Wes",
+        "amount": 25,
+        "price": 0.597,
+        "units": 41.9,
+        "time": "17:13"
       },
       {
         "t": 14,
         "bucket": 3,
-        "name": "Felix",
-        "amount": 25,
-        "price": 0.2,
-        "units": 125.0,
+        "name": "Ravi",
+        "amount": 100,
+        "price": 0.674,
+        "units": 148.4,
         "time": "17:14"
       },
       {
-        "t": 21,
-        "bucket": 1,
-        "name": "Tara",
-        "amount": 100,
-        "price": 0.26,
-        "units": 384.6,
-        "time": "17:21"
-      },
-      {
-        "t": 22,
-        "bucket": 1,
-        "name": "Zoe",
-        "amount": 10,
-        "price": 0.414,
-        "units": 24.2,
-        "time": "17:22"
-      },
-      {
-        "t": 25,
-        "bucket": 1,
-        "name": "Mira",
-        "amount": 30,
-        "price": 0.424,
-        "units": 70.8,
-        "time": "17:25"
-      },
-      {
-        "t": 27,
-        "bucket": 4,
-        "name": "Marco",
+        "t": 16,
+        "bucket": 3,
+        "name": "Nadia",
         "amount": 25,
-        "price": 0.24,
-        "units": 104.2,
-        "time": "17:27"
-      },
-      {
-        "t": 28,
-        "bucket": 1,
-        "name": "Ines",
-        "amount": 20,
-        "price": 0.452,
-        "units": 44.3,
-        "time": "17:28"
+        "price": 0.784,
+        "units": 31.9,
+        "time": "17:16"
       }
     ],
-    "finalPrices": [
-      0.384,
-      0.47,
-      0.35,
-      0.25,
-      0.282
+    "bounty": 670,
+    "fit80": [
+      63440.43,
+      63491.12
     ],
-    "bounty": 455
+    "trend80": 0.08,
+    "tReveal": "17:24"
   },
   {
     "id": "jul05-0500",
@@ -549,7 +528,6 @@ export const marketReplays = [
     "fullDateLabel": "July 5, 2026",
     "windowLabel": "05:00-05:30 UTC",
     "tOpen": "05:00 UTC",
-    "tMid": "05:15",
     "tClose": "05:30",
     "thresholds": [
       -0.2241,
@@ -610,78 +588,72 @@ export const marketReplays = [
       62770.13,
       62758.78
     ],
-    "fitHalf": [
-      62780.49,
-      62748.93
-    ],
     "trendFull": -0.018,
-    "trendHalf": -0.05,
     "interim": 2,
     "winner": 2,
     "bets": [
       {
         "t": 1,
         "bucket": 2,
-        "name": "Elif",
-        "amount": 15,
-        "price": 0.2,
-        "units": 75.0,
+        "name": "Omar",
+        "amount": 20,
+        "price": 0.164,
+        "units": 122.1,
         "time": "05:01"
       },
       {
-        "t": 9,
-        "bucket": 0,
-        "name": "Nico",
-        "amount": 15,
-        "price": 0.2,
-        "units": 75.0,
-        "time": "05:09"
+        "t": 3,
+        "bucket": 2,
+        "name": "Luis",
+        "amount": 50,
+        "price": 0.296,
+        "units": 168.8,
+        "time": "05:03"
+      },
+      {
+        "t": 3,
+        "bucket": 4,
+        "name": "Sam",
+        "amount": 30,
+        "price": 0.239,
+        "units": 125.3,
+        "time": "05:03"
+      },
+      {
+        "t": 8,
+        "bucket": 1,
+        "name": "Zoe",
+        "amount": 150,
+        "price": 0.465,
+        "units": 322.3,
+        "time": "05:08"
       },
       {
         "t": 13,
         "bucket": 1,
-        "name": "Ines",
-        "amount": 150,
-        "price": 0.2,
-        "units": 750.0,
+        "name": "Maya",
+        "amount": 25,
+        "price": 0.718,
+        "units": 34.8,
         "time": "05:13"
       },
       {
-        "t": 14,
-        "bucket": 4,
+        "t": 15,
+        "bucket": 0,
         "name": "Ravi",
-        "amount": 15,
-        "price": 0.2,
-        "units": 75.0,
-        "time": "05:14"
-      },
-      {
-        "t": 21,
-        "bucket": 1,
-        "name": "Piotr",
-        "amount": 20,
-        "price": 0.5,
-        "units": 40.0,
-        "time": "05:21"
-      },
-      {
-        "t": 25,
-        "bucket": 2,
-        "name": "Tessa",
-        "amount": 20,
-        "price": 0.23,
-        "units": 87.0,
-        "time": "05:25"
+        "amount": 10,
+        "price": 0.666,
+        "units": 15.0,
+        "time": "05:15"
       }
     ],
-    "finalPrices": [
-      0.23,
-      0.516,
-      0.265,
-      0.2,
-      0.23
+    "bounty": 285,
+    "fit80": [
+      62772.19,
+      62757.21
     ],
-    "bounty": 235
+    "trend80": -0.024,
+    "tReveal": "05:24"
   },
   {
     "id": "jul07-1700",
@@ -689,7 +661,6 @@ export const marketReplays = [
     "fullDateLabel": "July 7, 2026",
     "windowLabel": "17:00-17:30 UTC",
     "tOpen": "17:00 UTC",
-    "tMid": "17:15",
     "tClose": "17:30",
     "thresholds": [
       -0.2125,
@@ -750,104 +721,98 @@ export const marketReplays = [
       64017.57,
       64058.38
     ],
-    "fitHalf": [
-      64038.39,
-      64049.87
-    ],
     "trendFull": 0.064,
-    "trendHalf": 0.018,
-    "interim": 2,
+    "interim": 1,
     "winner": 3,
     "bets": [
       {
-        "t": 6,
+        "t": 4,
         "bucket": 3,
-        "name": "Kofi",
-        "amount": 15,
-        "price": 0.2,
-        "units": 75.0,
-        "time": "17:06"
+        "name": "Felix",
+        "amount": 50,
+        "price": 0.287,
+        "units": 174.2,
+        "time": "17:04"
       },
       {
         "t": 7,
         "bucket": 3,
-        "name": "Silas",
-        "amount": 30,
-        "price": 0.23,
-        "units": 130.4,
+        "name": "Owen",
+        "amount": 50,
+        "price": 0.455,
+        "units": 109.9,
         "time": "17:07"
       },
       {
-        "t": 8,
-        "bucket": 2,
-        "name": "Tessa",
+        "t": 9,
+        "bucket": 0,
+        "name": "Piotr",
+        "amount": 15,
+        "price": 0.445,
+        "units": 33.7,
+        "time": "17:09"
+      },
+      {
+        "t": 10,
+        "bucket": 1,
+        "name": "Ravi",
         "amount": 30,
-        "price": 0.2,
-        "units": 150.0,
-        "time": "17:08"
+        "price": 0.489,
+        "units": 61.4,
+        "time": "17:10"
       },
       {
         "t": 11,
-        "bucket": 0,
-        "name": "Yuki",
-        "amount": 150,
-        "price": 0.2,
-        "units": 750.0,
+        "bucket": 1,
+        "name": "Rhea",
+        "amount": 20,
+        "price": 0.547,
+        "units": 36.6,
         "time": "17:11"
       },
       {
         "t": 13,
-        "bucket": 0,
-        "name": "Owen",
-        "amount": 25,
-        "price": 0.5,
-        "units": 50.0,
+        "bucket": 2,
+        "name": "Diego",
+        "amount": 30,
+        "price": 0.599,
+        "units": 50.1,
         "time": "17:13"
       },
       {
-        "t": 17,
-        "bucket": 2,
-        "name": "Hana",
-        "amount": 20,
-        "price": 0.26,
-        "units": 76.9,
-        "time": "17:17"
-      },
-      {
-        "t": 19,
-        "bucket": 2,
-        "name": "Felix",
+        "t": 15,
+        "bucket": 4,
+        "name": "Vera",
         "amount": 150,
-        "price": 0.291,
-        "units": 515.9,
-        "time": "17:19"
+        "price": 0.707,
+        "units": 212.2,
+        "time": "17:15"
       },
       {
-        "t": 23,
-        "bucket": 2,
-        "name": "Ines",
-        "amount": 30,
-        "price": 0.497,
-        "units": 60.3,
-        "time": "17:23"
-      },
-      {
-        "t": 24,
-        "bucket": 2,
+        "t": 15,
+        "bucket": 1,
         "name": "Elif",
-        "amount": 150,
-        "price": 0.521,
-        "units": 287.8,
-        "time": "17:24"
+        "amount": 25,
+        "price": 0.712,
+        "units": 35.1,
+        "time": "17:15"
+      },
+      {
+        "t": 18,
+        "bucket": 4,
+        "name": "Ken",
+        "amount": 50,
+        "price": 0.872,
+        "units": 57.4,
+        "time": "17:18"
       }
     ],
-    "finalPrices": [
-      0.52,
-      0.2,
-      0.636,
-      0.282,
-      0.2
+    "bounty": 420,
+    "fit80": [
+      64047.91,
+      63997.69
     ],
-    "bounty": 600
+    "trend80": -0.078,
+    "tReveal": "17:24"
   }
 ];

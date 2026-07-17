@@ -494,8 +494,8 @@ p {
 }
 
 @keyframes wpa-trend-reveal {
-  0%, 43.75% { clip-path: inset(0 50% 0 0); opacity: 0; }
-  46.5% { opacity: 1; }
+  0%, 62.5% { clip-path: inset(0 20% 0 0); opacity: 0; }
+  64.5% { opacity: 1; }
   75%, 100% { clip-path: inset(0 0 0 0); opacity: 1; }
 }
 
@@ -505,8 +505,8 @@ p {
 }
 
 @keyframes wpa-trend-label {
-  0%, 43.75% { opacity: 0; }
-  46.5%, 100% { opacity: 1; }
+  0%, 62.5% { opacity: 0; }
+  64.5%, 100% { opacity: 1; }
 }
 
 @keyframes wpa-cap-a {
@@ -516,13 +516,13 @@ p {
 
 @keyframes wpa-cap-b {
   0%, 12.5% { opacity: 0; }
-  14.5%, 41.75% { opacity: 1; }
-  43.75%, 100% { opacity: 0; }
+  14.5%, 60.5% { opacity: 1; }
+  62.5%, 100% { opacity: 0; }
 }
 
 @keyframes wpa-cap-c {
-  0%, 43.75% { opacity: 0; }
-  45.75%, 73% { opacity: 1; }
+  0%, 62.5% { opacity: 0; }
+  64.5%, 73% { opacity: 1; }
   75%, 100% { opacity: 0; }
 }
 
@@ -591,8 +591,8 @@ p {
 }
 
 @keyframes wpb-half {
-  0%, 40% { opacity: 0; }
-  42%, 70% { opacity: 1; }
+  0%, 58% { opacity: 0; }
+  60%, 70% { opacity: 1; }
   73%, 100% { opacity: 0; }
 }
 
@@ -602,8 +602,8 @@ p {
 }
 
 @keyframes wpb-trendlabel {
-  0%, 40% { opacity: 0; }
-  43%, 100% { opacity: 1; }
+  0%, 58% { opacity: 0; }
+  61%, 100% { opacity: 1; }
 }
 
 @keyframes wpb-cap-a {
@@ -613,13 +613,13 @@ p {
 
 @keyframes wpb-cap-b {
   0%, 10% { opacity: 0; }
-  12%, 38% { opacity: 1; }
-  40%, 100% { opacity: 0; }
+  12%, 56% { opacity: 1; }
+  58%, 100% { opacity: 0; }
 }
 
 @keyframes wpb-cap-c {
-  0%, 40% { opacity: 0; }
-  42%, 68% { opacity: 1; }
+  0%, 58% { opacity: 0; }
+  60%, 68% { opacity: 1; }
   70%, 100% { opacity: 0; }
 }
 

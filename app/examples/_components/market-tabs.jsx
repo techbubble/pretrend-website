@@ -21,7 +21,7 @@ export function MarketTabs() {
   const stats = [
     ['Window', `${m.fullDateLabel} · ${m.windowLabel}`],
     ['Open / close', `${fmtPrice(m.market[0])} / ${fmtPrice(m.market[m.market.length - 1])}`],
-    ['Trend at 15 min', `${fmtPct(m.trendHalf)} (${BUCKET_NAMES[m.interim]})`],
+    ['Trend at close (80%)', `${fmtPct(m.trend80)} (${BUCKET_NAMES[m.interim]})`],
     ['Final trend', fmtPct(m.trendFull)],
     ['Winner', BUCKET_NAMES[m.winner], BUCKET_COLORS[m.winner]],
   ];

@@ -72,7 +72,7 @@ const BucketDistributionSVG = () => (
   </svg>
 );
 
-const BondingCurveSVG = () => (
+const TimeslopeSVG = () => (
   <svg viewBox="0 0 400 250" style={{ width: '100%', height: 'auto' }}>
     <defs>
       <linearGradient id="curveFill" x1="0" y1="0" x2="0" y2="1">
@@ -84,21 +84,26 @@ const BondingCurveSVG = () => (
     {[60, 100, 140, 180].map(y => (
       <line key={y} x1="50" y1={y} x2="370" y2={y} stroke="rgba(255,255,255,0.05)" strokeWidth="1"/>
     ))}
-    {/* Curve */}
-    <path d="M50,210 Q100,205 130,195 Q180,175 220,150 Q270,115 310,75 Q340,45 370,25"
+    {/* Time drift: every bucket climbs 10c -> $1.00 by the 80% close */}
+    <line x1="50" y1="210" x2="330" y2="30" stroke="rgba(255,255,255,0.35)" strokeWidth="1.5" strokeDasharray="5 4"/>
+    {/* Demand-accelerated bucket: ahead of the clock */}
+    <path d="M50,210 C120,175 170,140 230,85 Q290,38 330,30"
           fill="none" stroke="#7abe4d" strokeWidth="2.5"/>
-    <path d="M50,210 Q100,205 130,195 Q180,175 220,150 Q270,115 310,75 Q340,45 370,25 L370,220 L50,220 Z"
+    <path d="M50,210 C120,175 170,140 230,85 Q290,38 330,30 L330,220 L50,220 Z"
           fill="url(#curveFill)"/>
+    {/* Close marker */}
+    <line x1="330" y1="25" x2="330" y2="220" stroke="rgba(255,255,255,0.3)" strokeWidth="1" strokeDasharray="3 4"/>
+    <text x="330" y="18" textAnchor="middle" fill="rgba(255,255,255,0.6)" fontSize="9">$1.00 · CLOSE (80%)</text>
     {/* Buyer markers */}
-    <circle cx="90" cy="208" r="5" fill="#4ade80"/>
-    <text x="90" y="230" textAnchor="middle" fill="#4ade80" fontSize="9">$0.20</text>
-    <circle cx="180" cy="175" r="5" fill="#fbbf24"/>
-    <text x="180" y="230" textAnchor="middle" fill="#fbbf24" fontSize="9">$0.40</text>
-    <circle cx="250" cy="135" r="5" fill="#f97316"/>
-    <text x="250" y="230" textAnchor="middle" fill="#f97316" fontSize="9">$0.58</text>
+    <circle cx="70" cy="200" r="5" fill="#4ade80"/>
+    <text x="70" y="234" textAnchor="middle" fill="#4ade80" fontSize="9">$0.13</text>
+    <circle cx="180" cy="130" r="5" fill="#fbbf24"/>
+    <text x="180" y="234" textAnchor="middle" fill="#fbbf24" fontSize="9">$0.48</text>
+    <circle cx="280" cy="55" r="5" fill="#f97316"/>
+    <text x="280" y="234" textAnchor="middle" fill="#f97316" fontSize="9">$0.88</text>
     {/* Axes */}
     <text x="20" y="135" fill="rgba(255,255,255,0.4)" fontSize="9" transform="rotate(-90,20,135)">PRICE</text>
-    <text x="210" y="248" textAnchor="middle" fill="rgba(255,255,255,0.4)" fontSize="9">UNITS PURCHASED</text>
+    <text x="210" y="248" textAnchor="middle" fill="rgba(255,255,255,0.4)" fontSize="9">TIME + DEMAND</text>
   </svg>
 );
 
@@ -467,8 +472,8 @@ export default function PretrendPage() {
                 </p>
                 <p className="text-muted-custom">
                   Users purchase units in one of five buckets — from significant decline to significant
-                  growth. Earlier buyers receive more units per dollar through a bonding curve,
-                  guaranteeing better returns for early conviction.
+                  growth. Every bucket's price climbs from a dime at open to a dollar at the close,
+                  so earlier buyers receive more units per dollar and better returns for early conviction.
                 </p>
               </div>
             </div>
@@ -498,7 +503,7 @@ export default function PretrendPage() {
                       { feature: 'Captures magnitude and direction, not just yes/no', poly: false, kalshi: false },
                       { feature: 'Five graded outcome buckets', poly: false, kalshi: false },
                       { feature: 'Native on-chain statistical computation', poly: false, kalshi: false },
-                      { feature: 'Bonding curve rewards early conviction', poly: false, kalshi: false },
+                      { feature: 'Timeslope pricing rewards early conviction', poly: false, kalshi: false },
                       { feature: 'Any time-series data source', poly: false, kalshi: false },
                       { feature: 'Cross-chain resolution', poly: false, kalshi: false },
                       { feature: 'Permissionless on-chain settlement', poly: true, kalshi: false },
@@ -795,30 +800,30 @@ export default function PretrendPage() {
           </div>
         </section>
 
-        {/* Bonding Curve Pricing */}
+        {/* Timeslope Pricing */}
         <section className="section-padding bg-dark-alt">
           <div className="container">
-            <h2 className="display-6 fw-bold text-center mb-3">Bonding Curve Pricing</h2>
+            <h2 className="display-6 fw-bold text-center mb-3">Timeslope Pricing</h2>
             <p className="text-muted-custom text-center mb-5" style={{ maxWidth: '700px', margin: '0 auto' }}>
-              Each bucket has its own independent price curve. Earlier buyers receive more units
-              per dollar — rewarding early conviction with better returns.
+              A dime at the open, a dollar at the close. Every bucket's price climbs with the
+              clock and accelerates with demand — rewarding early conviction with better returns.
             </p>
 
             <div className="row mb-5">
               <div className="col-lg-5 mb-4 mb-lg-0">
                 <div className="card-dark p-4 h-100">
-                  <BondingCurveSVG />
+                  <TimeslopeSVG />
                 </div>
               </div>
               <div className="col-lg-7">
                 <div className="card-accent p-4 mb-4">
                   <h3 className="h5 mb-3">The Formula</h3>
                   <div className="p-3 rounded mb-3" style={{ background: 'rgba(0,0,0,0.3)', fontFamily: 'monospace' }}>
-                    <span className="text-green">price</span> = basePrice &times; (1 + bucketUnits / k)
+                    <span className="text-green">price</span> = min($1.00, $0.10 + timeDrift + demandSlippage)
                   </div>
                   <p className="text-muted-custom mb-2">
-                    <strong className="text-white">basePrice:</strong> $0.20 &middot;
-                    <strong className="text-white"> k:</strong> 500 (price doubles after k units)
+                    <strong className="text-white">timeDrift:</strong> steady climb to $1.00 at the 80% close &middot;
+                    <strong className="text-white"> demandSlippage:</strong> every purchase pushes its bucket further ahead
                   </p>
                 </div>
                 <div className="card-dark p-4">
@@ -831,14 +836,14 @@ export default function PretrendPage() {
                         </tr>
                       </thead>
                       <tbody className="text-white-50">
-                        <tr><td>Alice (1st)</td><td>$0.20</td><td>500</td><td>52.6%</td><td className="text-green">1.58x</td></tr>
-                        <tr><td>Bob (2nd)</td><td>$0.40</td><td>250</td><td>26.3%</td><td>0.79x</td></tr>
-                        <tr><td>Carol (3rd)</td><td>$0.50</td><td>200</td><td>21.1%</td><td>0.63x</td></tr>
+                        <tr><td>Alice (early)</td><td>$0.21</td><td>466</td><td>53.1%</td><td className="text-green">4.78x</td></tr>
+                        <tr><td>Carol (mid)</td><td>$0.44</td><td>226</td><td>25.8%</td><td>2.32x</td></tr>
+                        <tr><td>Frank (late)</td><td>$0.91</td><td>110</td><td>12.6%</td><td>1.13x</td></tr>
                       </tbody>
                     </table>
                   </div>
                   <p className="text-muted-custom small mb-0">
-                    Each bucket&apos;s price is independent — activity in one bucket doesn&apos;t affect prices in another.
+                    Same $100 stake, different timing. Betting closes at 80% of the market, when every bucket reaches $1.00 and the trend line is revealed.
                   </p>
                 </div>
               </div>
@@ -864,7 +869,7 @@ export default function PretrendPage() {
                 {
                   step: '02',
                   title: 'Trade',
-                  desc: 'Users purchase units in their chosen bucket on BSC. Bonding curve prices each purchase. The Notary updates the trend at every resolution interval (minimum 15 min).',
+                  desc: 'Users purchase units in their chosen bucket. Timeslope pricing fills each purchase, climbing with time and demand until the 80% close. The Notary updates the trend at the source cadence.',
                 },
                 {
                   step: '03',

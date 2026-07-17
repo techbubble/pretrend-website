@@ -11,10 +11,10 @@ const titillium = Titillium_Web({
 export const metadata: Metadata = {
   title: "Pretrend Protocol | Continuous Trend Resolution for Prediction Markets",
   description: "Pretrend is a trend-based oracle protocol enabling prediction markets to resolve on the magnitude and direction of change — not just binary outcomes. Native on-chain statistical computation on the Vitruveo blockchain.",
-  keywords: ["Pretrend", "prediction markets", "oracle", "trend", "OLS regression", "Vitruveo", "blockchain", "EVM", "bonding curve", "Vertical Foundation"],
+  keywords: ["Pretrend", "prediction markets", "oracle", "trend", "OLS regression", "Vitruveo", "blockchain", "EVM", "Timeslope", "Vertical Foundation"],
   openGraph: {
     title: "Pretrend Protocol | Continuous Trend Resolution for Prediction Markets",
-    description: "Prediction markets that resolve on magnitude and direction — five graded outcome buckets, priced by bonding curves, resolved by on-chain statistics.",
+    description: "Prediction markets that resolve on magnitude and direction — five graded outcome buckets, priced dime-to-dollar on a Timeslope, resolved by on-chain statistics.",
     type: "website",
   },
   icons: {

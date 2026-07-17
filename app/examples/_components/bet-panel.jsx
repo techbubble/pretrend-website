@@ -10,8 +10,9 @@ import { MarketReplay } from './market-replay';
 const LOOP_MS = 20000;
 const OPEN = 0.10;
 const CLOSE = 0.70;
-const BASE = 0.2;
-const K = 500;
+const REVEAL = 0.58; // betting closes + trend reveals at 80% of the market (24 min)
+const T_BET_MIN = 24;
+const U_REF = 2000;
 
 const betFrac = (t) => OPEN + (t / 30) * (CLOSE - OPEN);
 
@@ -98,24 +99,26 @@ export function BetPanel({ market, onReplay }) {
     units[b.bucket] += b.units;
     pools[b.bucket] += b.amount;
   }
-  const prices = units.map((u) => BASE * (1 + u / K));
+  // Timeslope: price = min($1, 10\u00a2 + time drift + demand slippage)
+  const elapsedMin = Math.max(0, Math.min(T_BET_MIN, ((now - OPEN) / (CLOSE - OPEN)) * 30));
+  const prices = units.map((u) => Math.min(1, 0.10 + 0.90 * (elapsedMin / T_BET_MIN) + 0.90 * (u / (u + U_REF))));
 
   // AI market insight commentary, staged to the replay timeline (see whitepaper 14.1)
-  const stage = now < OPEN ? 0 : now < 0.4 ? 1 : now < CLOSE ? 2 : 3;
+  const stage = now < OPEN ? 0 : now < REVEAL ? 1 : now < CLOSE ? 2 : 3;
   const totalPool = pools.reduce((a, b) => a + b, 0);
   const topPool = totalPool > 0 ? pools.indexOf(Math.max(...pools)) : null;
   const winCount = market.bets.filter((b) => b.bucket === market.winner).length;
   const q = market.thresholds;
   const insight = [
-    `Pre-market. Fifteen minutes of lead-in BTC data are on screen for context. Thirty days of history set the Flat band at ${fmtPct(q[1])} to ${fmtPct(q[2])}, and every bucket opens at $0.20.`,
-    `Market open, ${market.tOpen}. Thresholds are locked and the trend line stays hidden until ${market.tMid}. ${
+    `Pre-market. Fifteen minutes of lead-in BTC data are on screen for context. Thirty days of history set the Flat band at ${fmtPct(q[1])} to ${fmtPct(q[2])}, and every bucket opens at $0.10 and climbs toward $1.00.`,
+    `Market open, ${market.tOpen}. Prices climb every second toward $1.00 at the ${market.tReveal} close; the trend stays hidden until then. ${
       topPool !== null
-        ? `Early money favors ${BUCKET_NAMES[topPool]}, and its price is climbing.`
+        ? `Early money favors ${BUCKET_NAMES[topPool]}, pushing its price ahead of the clock.`
         : 'Waiting for the first bets to arrive.'
     }`,
-    `Trend revealed: ${fmtPct(market.trendHalf, 3)}, tracking ${BUCKET_NAMES[market.interim]}. The trajectory is public now, and late money tends to chase the visible band${
-      topPool !== null ? `; the largest pool is ${BUCKET_NAMES[topPool]}` : ''
-    }.`,
+    `Betting closed at $1.00. Trend revealed: ${fmtPct(market.trend80, 3)}, tracking ${BUCKET_NAMES[market.interim]}. Positions are locked${
+      topPool !== null ? `; the biggest pool is ${BUCKET_NAMES[topPool]}` : ''
+    } and the final six minutes decide it.`,
     `Resolved: final trend ${fmtPct(market.trendFull, 3)}, ${BUCKET_NAMES[market.winner]} wins${
       market.interim !== market.winner
         ? `, a reversal from ${BUCKET_NAMES[market.interim]} at the reveal`
@@ -224,7 +227,7 @@ export function BetPanel({ market, onReplay }) {
             })}
             {visible.length === 0 && (
               <tr className="empty">
-                <td colSpan={7}>Bets appear here as the market replays — all buckets open at $0.20</td>
+                <td colSpan={7}>Bets appear here as the market replays — all buckets open at $0.10 and climb with the clock</td>
               </tr>
             )}
           </tbody>
