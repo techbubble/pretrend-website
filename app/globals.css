@@ -1358,3 +1358,72 @@ p {
   -webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
   mask-image: linear-gradient(180deg, transparent 0%, #000 18%, #000 82%, transparent 100%);
 }
+
+/* Game slope slider: oversized thumb — it is the primary control. */
+.ptg-slope-range {
+  height: 2.75rem;
+}
+.ptg-slope-range::-webkit-slider-runnable-track {
+  height: 8px;
+}
+.ptg-slope-range::-webkit-slider-thumb,
+.ptg-slope-range::-webkit-slider-thumb:active {
+  width: 34px;
+  height: 34px;
+  margin-top: -13px;
+  background-color: #2f8fd6 !important;
+  background-image: none !important;
+  opacity: 1;
+  border: 3px solid #fff;
+  box-shadow: 0 0 10px rgba(47, 143, 214, 0.6);
+}
+.ptg-slope-range::-moz-range-track {
+  height: 8px;
+}
+.ptg-slope-range::-moz-range-thumb,
+.ptg-slope-range::-moz-range-thumb:active {
+  width: 34px;
+  height: 34px;
+  background-color: #2f8fd6 !important;
+  background-image: none !important;
+  opacity: 1;
+  border: 3px solid #fff;
+  box-shadow: 0 0 10px rgba(47, 143, 214, 0.6);
+}
+
+/* TrendPulse intro tile: animated pulse-trace background */
+.tp-hero-tile {
+  position: relative;
+  overflow: hidden;
+}
+
+.tp-pulse-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.tp-pulse-glow {
+  opacity: 0.3;
+  filter: blur(5px);
+}
+
+@keyframes tpPulseDraw {
+  from { stroke-dashoffset: 3600; }
+  to { stroke-dashoffset: 0; }
+}
+
+.tp-pulse-line {
+  stroke-dasharray: 1800 1800;
+  animation: tpPulseDraw 7s linear infinite;
+}
+
+/* TrendPulse buy bar: stack the quantity slider on its own row on phones */
+@media (max-width: 767.98px) {
+  .tp-buy-group {
+    flex-basis: 100%;
+  }
+}

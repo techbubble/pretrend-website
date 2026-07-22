@@ -94,7 +94,7 @@ export function OlsPlayground() {
         </text>
       </svg>
 
-      <div className="d-flex align-items-center gap-3 flex-wrap mt-2">
+      <div className="d-flex align-items-center justify-content-center gap-3 flex-wrap mt-2">
         <input
           type="range"
           className="form-range flex-grow-1"

@@ -16,25 +16,16 @@ export default function Footer({ disclaimer }: { disclaimer?: string }) {
               />
             </a>
           </div>
-          <div className="col-md-6 text-center text-md-end">
-            <a href="/whitepaper" className="me-4">
-              Whitepaper
-            </a>
-            <a href="/examples" className="me-4">
-              Examples
-            </a>
-            <a href="/ols" className="me-4">
-              OLS
-            </a>
-            <a href="/preview" className="me-4">
-              Preview
-            </a>
-            <a href="/investors" className="me-4">
-              Investors
-            </a>
-            <a href="mailto:info@verticalfoundation.net">
-              Contact
-            </a>
+          {/* Flex-wrap, not inline runs: JSX strips the whitespace between sibling
+              anchors, which otherwise renders one unbreakable 500px+ line that
+              forces horizontal overflow on phones. */}
+          <div className="col-md-6 d-flex flex-wrap justify-content-center justify-content-md-end column-gap-4 row-gap-2">
+            <a href="/whitepaper">Whitepaper</a>
+            <a href="/examples">Examples</a>
+            <a href="/ols">OLS</a>
+            <a href="/preview">Preview</a>
+            <a href="/investors">Investors</a>
+            <a href="mailto:info@verticalfoundation.net">Contact</a>
           </div>
         </div>
         <hr className="my-4" style={{ borderColor: 'rgba(255,255,255,0.1)' }} />
