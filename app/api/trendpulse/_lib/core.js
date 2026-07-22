@@ -233,7 +233,7 @@ export async function handleSubmit(body) {
   await Promise.all([
     r.incr(key.played(address)),
     win ? r.incr(key.won(address)) : Promise.resolve(),
-    r.zincrby(key.lb, points, address),
+    points > 0 ? r.zincrby(key.lb, points, address) : Promise.resolve(),
   ]);
 
   const state = await stateOf(address);
@@ -269,7 +269,8 @@ export async function getLeaderboard() {
   const flat = await r.zrevrange(key.lb, 0, LEADERBOARD_SIZE - 1, 'WITHSCORES');
   const rows = [];
   for (let i = 0; i < flat.length; i += 2) {
-    rows.push({ address: flat[i], points: Math.round(parseFloat(flat[i + 1])) });
+    const points = Math.round(parseFloat(flat[i + 1]));
+    if (points > 0) rows.push({ address: flat[i], points });
   }
   const names = await Promise.all(rows.map((row) => vnsName(row.address)));
   return rows.map((row, i) => ({ ...row, name: names[i] }));
