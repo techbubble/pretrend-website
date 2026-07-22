@@ -37,7 +37,7 @@ export function Leaderboard({ rows, myAddress }) {
                     )}
                     {mine ? ' (you)' : ''}
                   </td>
-                  <td style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{row.points}</td>
+                  <td style={{ textAlign: 'right', fontVariantNumeric: 'tabular-nums' }}>{row.points.toLocaleString('en-US')}</td>
                 </tr>
               );
             })}

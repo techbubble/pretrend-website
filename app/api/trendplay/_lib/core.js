@@ -47,6 +47,21 @@ const VIP_ABI = [
     ],
     outputs: [],
   },
+  {
+    type: 'function',
+    name: 'getVIPNFTByOwner',
+    stateMutability: 'view',
+    inputs: [{ name: 'account', type: 'address' }],
+    outputs: [
+      {
+        type: 'tuple',
+        components: [
+          { name: 'tokenId', type: 'uint256' },
+          { name: 'units', type: 'uint256' },
+        ],
+      },
+    ],
+  },
 ];
 const VNS_ABI = [
   {
@@ -126,12 +141,18 @@ function normAddress(a) {
 
 export async function stateOf(address) {
   const r = getRedis();
-  const [credits, played, won, points, vipPending] = await Promise.all([
+  const [credits, played, won, points, vipPending, vipUnits] = await Promise.all([
     r.get(key.credits(address)),
     r.get(key.played(address)),
     r.get(key.won(address)),
     r.zscore(key.lb, address),
     r.get(key.vipPending(address)),
+    // Live on-chain VIP units; null (not 0) on read failure so the client
+    // keeps its last known value instead of animating a phantom change.
+    chain
+      .readContract({ address: VIP_ADDRESS, abi: VIP_ABI, functionName: 'getVIPNFTByOwner', args: [address] })
+      .then((nft) => Number(nft.units))
+      .catch(() => null),
   ]);
   return {
     credits: parseInt(credits || '0', 10),
@@ -139,6 +160,7 @@ export async function stateOf(address) {
     won: parseInt(won || '0', 10),
     points: Math.round(parseFloat(points || '0')),
     vipPending: parseInt(vipPending || '0', 10),
+    vipUnits,
   };
 }
 

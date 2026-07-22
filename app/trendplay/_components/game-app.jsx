@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useAccount, useConfig, useReadContract, useWriteContract } from 'wagmi';
 import { waitForTransactionReceipt } from 'wagmi/actions';
 import { erc20Abi } from 'viem';
@@ -39,7 +39,7 @@ export function GameApp() {
 
   const [cfg, setCfg] = useState(null);
   const [cfgError, setCfgError] = useState(null);
-  const [stats, setStats] = useState({ credits: 0, played: 0, won: 0, points: 0, vipPending: 0 });
+  const [stats, setStats] = useState({ credits: 0, played: 0, won: 0, points: 0, vipPending: 0, vipUnits: 0 });
   const [lbRows, setLbRows] = useState([]);
   const [qty, setQty] = useState(5);
   const [buyStatus, setBuyStatus] = useState(null);
@@ -50,6 +50,8 @@ export function GameApp() {
   const [error, setError] = useState(null);
   const [previewGame, setPreviewGame] = useState(null);
   const [vipRetryUsed, setVipRetryUsed] = useState(false);
+  // VIP units at page load; a later differing value animates the tile.
+  const vipBaseline = useRef(null);
 
   useEffect(() => {
     getGameConfig().then(setCfg).catch((e) => setCfgError(e.message));
@@ -79,14 +81,20 @@ export function GameApp() {
 
   const refresh = useCallback(() => {
     if (!address) return;
-    getGameState(address).then(setStats).catch(() => {});
+    getGameState(address)
+      .then((d) => {
+        setStats((s) => ({ ...d, vipUnits: d.vipUnits ?? s.vipUnits }));
+        if (vipBaseline.current === null && d.vipUnits != null) vipBaseline.current = d.vipUnits;
+      })
+      .catch(() => {});
   }, [address]);
 
   useEffect(() => {
     setGame(null);
     setResult(null);
     setError(null);
-    setStats({ credits: 0, played: 0, won: 0, points: 0, vipPending: 0 });
+    setStats({ credits: 0, played: 0, won: 0, points: 0, vipPending: 0, vipUnits: 0 });
+    vipBaseline.current = null;
     refresh();
   }, [address, refresh]);
 
@@ -143,8 +151,12 @@ export function GameApp() {
     try {
       const r = await postSubmit(game.gameId, b);
       setResult(r);
-      setStats({ credits: r.credits, played: r.played, won: r.won, points: r.points, vipPending: r.vipPending });
+      setStats((s) => ({ ...s, credits: r.credits, played: r.played, won: r.won, points: r.points, vipPending: r.vipPending, vipUnits: r.vipUnits ?? s.vipUnits }));
       getLeaderboard().then((lb) => setLbRows(lb.rows)).catch(() => {});
+      // The mintAdmin tx lands a block or two later; refetch so the VIP tile
+      // picks up the new units and animates.
+      setTimeout(refresh, 6000);
+      setTimeout(refresh, 15000);
     } catch (e) {
       setError(e.message);
     } finally {
@@ -178,12 +190,13 @@ export function GameApp() {
         <div className="d-flex align-items-center gap-3 flex-wrap">
           <div className="mr-stat">
             <div className="mr-stat-label">Credits</div>
-            <div className="mr-stat-value text-white">{stats.credits}</div>
+            <div className="mr-stat-value text-white">{stats.credits.toLocaleString('en-US')}</div>
           </div>
-          <div className="d-flex align-items-center gap-2 flex-grow-1 tp-buy-group" style={{ minWidth: '220px' }}>
+          <div className="d-flex align-items-center gap-2 tp-buy-group">
             <input
               type="range"
-              className="form-range flex-grow-1"
+              className="form-range"
+              style={{ width: '140px' }}
               min={1}
               max={Math.max(1, maxCredits)}
               step={1}
@@ -192,20 +205,17 @@ export function GameApp() {
               onChange={(e) => setQty(parseInt(e.target.value, 10))}
               aria-label="Number of credits to buy"
             />
-            <span className="text-white" style={{ fontFamily: FONT, whiteSpace: 'nowrap' }}>
-              {qty} credit{qty > 1 ? 's' : ''} &middot; {(qty * (cfg?.creditPriceUsdt ?? 0.99)).toFixed(2)} USDT.b
-            </span>
           </div>
           <button type="button" className="btn btn-primary btn-sm" onClick={buy} disabled={!canBuy}>
             {buyStatus ? BUY_LABELS[buyStatus] : 'Buy'}
           </button>
           <div className="mr-stat ms-md-auto">
             <div className="mr-stat-label">Played</div>
-            <div className="mr-stat-value">{stats.played}</div>
+            <div className="mr-stat-value">{stats.played.toLocaleString('en-US')}</div>
           </div>
           <div className="mr-stat">
             <div className="mr-stat-label">Won</div>
-            <div className="mr-stat-value">{stats.won}</div>
+            <div className="mr-stat-value">{stats.won.toLocaleString('en-US')}</div>
           </div>
           <div
             className="mr-stat"
@@ -224,12 +234,18 @@ export function GameApp() {
               className={`mr-stat-value${stats.vipPending > 0 && !vipRetryUsed ? ' tp-points-alert' : ''}`}
               style={stats.vipPending > 0 ? (vipRetryUsed ? { color: '#f87171' } : undefined) : { color: '#e8c547' }}
             >
-              {stats.points}
+              {stats.points.toLocaleString('en-US')}
             </div>
           </div>
+          <div className={`mr-stat${vipBaseline.current !== null && stats.vipUnits !== vipBaseline.current ? ' tp-vip-changed' : ''}`}>
+            <div className="mr-stat-label">VIP Units</div>
+            <div className="mr-stat-value text-white">{(stats.vipUnits ?? 0).toLocaleString('en-US')}</div>
+          </div>
         </div>
-        <div className="mt-2" style={{ fontFamily: FONT, fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)' }}>
-          1 credit = {(cfg?.creditPriceUsdt ?? 0.99).toFixed(2)} USDT.b on Vitruveo &middot; each game uses 1 credit
+        <div className="mt-2" style={{ fontFamily: FONT, fontSize: '1rem', color: 'rgba(255,255,255,0.8)' }}>
+          Buy <span className="text-white">{qty}</span> credit{qty > 1 ? 's' : ''} for{' '}
+          <span className="text-white">{(qty * (cfg?.creditPriceUsdt ?? 0.99)).toFixed(2)} USDT.b</span>
+          {' '}&middot; 1 credit = {(cfg?.creditPriceUsdt ?? 0.99).toFixed(2)} USDT.b &middot; each game uses 1 credit
           {isConnected && cfg && balance !== undefined ? (
             <> &middot; balance {(Number(balance / 10n ** BigInt(cfg.usdtDecimals - 2)) / 100).toFixed(2)} USDT.b</>
           ) : null}
