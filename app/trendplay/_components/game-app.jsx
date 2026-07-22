@@ -49,6 +49,7 @@ export function GameApp() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [previewGame, setPreviewGame] = useState(null);
+  const [vipRetryUsed, setVipRetryUsed] = useState(false);
 
   useEffect(() => {
     getGameConfig().then(setCfg).catch((e) => setCfgError(e.message));
@@ -156,7 +157,8 @@ export function GameApp() {
   // Pending VIP units = won points not yet issued on-chain; clicking the
   // flashing Points stat retries the conversion jobs.
   const retryVip = async () => {
-    if (!address || stats.vipPending < 1) return;
+    if (!address || stats.vipPending < 1 || vipRetryUsed) return;
+    setVipRetryUsed(true); // one shot per page load
     try {
       await postDrain(address);
     } catch (e) {
@@ -208,13 +210,19 @@ export function GameApp() {
           <div
             className="mr-stat"
             onClick={retryVip}
-            title={stats.vipPending > 0 ? `${stats.vipPending} units not yet on-chain — click to retry` : undefined}
-            style={stats.vipPending > 0 ? { cursor: 'pointer' } : undefined}
+            title={
+              stats.vipPending > 0
+                ? vipRetryUsed
+                  ? `${stats.vipPending} units still pending — reload the page to retry again`
+                  : `${stats.vipPending} units not yet on-chain — click to retry`
+                : undefined
+            }
+            style={stats.vipPending > 0 && !vipRetryUsed ? { cursor: 'pointer' } : undefined}
           >
             <div className="mr-stat-label">Points</div>
             <div
-              className={`mr-stat-value${stats.vipPending > 0 ? ' tp-points-alert' : ''}`}
-              style={stats.vipPending > 0 ? undefined : { color: '#e8c547' }}
+              className={`mr-stat-value${stats.vipPending > 0 && !vipRetryUsed ? ' tp-points-alert' : ''}`}
+              style={stats.vipPending > 0 ? (vipRetryUsed ? { color: '#f87171' } : undefined) : { color: '#e8c547' }}
             >
               {stats.points}
             </div>
