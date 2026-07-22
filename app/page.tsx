@@ -278,7 +278,7 @@ export default function PretrendPage() {
               </div>
               <div className="col-lg-6">
                 <h2 className="display-6 fw-bold mb-3">
-                  Feel the Trend &mdash; Play <span className="text-gradient">TrendPlay</span>
+                  Feel the Trend &mdash; Go <span className="text-gradient">TrendPlay</span>
                 </h2>
                 <p className="text-muted-custom mb-4">
                   TrendPlay turns Pretrend&apos;s resolution engine into a sixty-second game:
@@ -286,7 +286,7 @@ export default function PretrendPage() {
                   you call it, the more points a win pays.
                 </p>
                 <a href="/trendplay" className="btn btn-green btn-lg">
-                  Play TrendPlay
+                  Go TrendPlay
                 </a>
               </div>
             </div>
