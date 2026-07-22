@@ -5,7 +5,8 @@
 
 import crypto from 'crypto';
 import Redis from 'ioredis';
-import { createPublicClient, http, getAddress, erc20Abi, parseEventLogs } from 'viem';
+import { createPublicClient, createWalletClient, defineChain, http, getAddress, erc20Abi, parseEventLogs } from 'viem';
+import { privateKeyToAccount } from 'viem/accounts';
 import contracts from '../../../../config/vtru-contracts.json';
 import {
   N,
@@ -34,6 +35,19 @@ const TEST_MODE = process.env.GAME_TEST_MODE === '1' || process.env.NODE_ENV ===
 
 const USDT_ADDRESS = getAddress(contracts[NETWORK].BridgedUSDT);
 const VNS_REGISTRAR = getAddress(contracts[NETWORK].VNSRegistrar);
+const VIP_ADDRESS = getAddress(contracts[NETWORK].VIP);
+const VIP_ABI = [
+  {
+    type: 'function',
+    name: 'mintAdmin',
+    stateMutability: 'nonpayable',
+    inputs: [
+      { name: 'account', type: 'address' },
+      { name: 'units', type: 'uint256' },
+    ],
+    outputs: [],
+  },
+];
 const VNS_ABI = [
   {
     type: 'function',
@@ -56,6 +70,28 @@ function getRedis() {
 
 const chain = createPublicClient({ transport: http(RPC_URL) });
 
+const vitruveoChain = defineChain({
+  id: NETWORK === 'mainnet' ? 1490 : 14333,
+  name: 'Vitruveo',
+  nativeCurrency: { name: 'VTRU', symbol: 'VTRU', decimals: 18 },
+  rpcUrls: { default: { http: [RPC_URL] } },
+});
+
+// SERVICE_ROLE signer for VIP.mintAdmin. Unset = conversions accumulate as
+// pending in Redis and can be drained once a signer is configured.
+function getVipWallet() {
+  const pk = process.env.VIP_SIGNER_PRIVATE_KEY;
+  if (!pk) return null;
+  if (!globalThis.__ptgameVipWallet) {
+    globalThis.__ptgameVipWallet = createWalletClient({
+      account: privateKeyToAccount(pk.startsWith('0x') ? pk : `0x${pk}`),
+      chain: vitruveoChain,
+      transport: http(RPC_URL),
+    });
+  }
+  return globalThis.__ptgameVipWallet;
+}
+
 let decimalsPromise = null;
 function getDecimals() {
   decimalsPromise ??= chain
@@ -73,6 +109,10 @@ const key = {
   game: (id) => `ptgame:game:${id}`,
   lb: 'ptgame:lb',
   vns: (a) => `ptgame:vns:${a}`,
+  vipJob: (id) => `ptgame:vipjob:${id}`,
+  vipPending: (a) => `ptgame:vippending:${a}`,
+  vipConverted: (a) => `ptgame:vipconverted:${a}`,
+  vipLock: 'ptgame:viplock',
 };
 
 function normAddress(a) {
@@ -235,6 +275,7 @@ export async function handleSubmit(body) {
     win ? r.incr(key.won(address)) : Promise.resolve(),
     points > 0 ? r.zincrby(key.lb, points, address) : Promise.resolve(),
   ]);
+  if (points > 0) await convertPointsToVip(address, points, gameId);
 
   const state = await stateOf(address);
   // pointsWon = this game's award; state.points = the running total.
@@ -242,6 +283,52 @@ export async function handleSubmit(body) {
     200,
     { series: ys, fit: { a: fit.a, b: fit.b, trendPct: fit.trendPct }, win, pointsWon: points, k, ...state },
   ];
+}
+
+// Silent Web2 -> Web3 conversion: every point won becomes a VIP unit via
+// VIP.mintAdmin (mints the NFT if the player has none, else adds units;
+// players check their balance in Scope — TrendPlay has no VIP surface).
+// Double-spend guards, in order:
+//   1. handleSubmit's GETDEL means the win path runs at most once per game.
+//   2. The per-game vipJob key is claimed with SET NX before anything else;
+//      a replayed conversion finds the claim and stops.
+//   3. The on-chain send is serialized behind a Redis lock (nonce safety),
+//      and the job's txHash is recorded before counters move.
+// Failures leave the job with no txHash and the units in vipPending — owed,
+// not lost, and drainable later. vipConverted counts units actually sent.
+async function convertPointsToVip(address, points, gameId) {
+  const r = getRedis();
+  const claimed = await r.set(
+    key.vipJob(gameId),
+    JSON.stringify({ address, points, at: Date.now() }),
+    'NX'
+  );
+  if (!claimed) return; // already claimed by a previous attempt
+  await r.incrby(key.vipPending(address), points);
+
+  const wallet = getVipWallet();
+  if (!wallet) return; // no signer configured: stays pending
+
+  const lock = await r.set(key.vipLock, gameId, 'PX', 15000, 'NX');
+  if (!lock) return; // another invocation is sending; stays pending
+  try {
+    const hash = await wallet.writeContract({
+      address: VIP_ADDRESS,
+      abi: VIP_ABI,
+      functionName: 'mintAdmin',
+      args: [address, BigInt(points)],
+    });
+    await r
+      .multi()
+      .set(key.vipJob(gameId), JSON.stringify({ address, points, txHash: hash, at: Date.now() }), 'XX')
+      .incrby(key.vipConverted(address), points)
+      .decrby(key.vipPending(address), points)
+      .exec();
+  } catch (e) {
+    console.error('[trendplay] VIP conversion failed, left pending:', gameId, e.shortMessage || e.message);
+  } finally {
+    await r.del(key.vipLock);
+  }
 }
 
 async function vnsName(address) {
