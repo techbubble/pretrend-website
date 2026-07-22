@@ -110,6 +110,7 @@ const key = {
   lb: 'ptgame:lb',
   vns: (a) => `ptgame:vns:${a}`,
   vipJob: (id) => `ptgame:vipjob:${id}`,
+  vipJobs: (a) => `ptgame:vipjobs:${a}`, // per-address index of unsent jobs
   vipPending: (a) => `ptgame:vippending:${a}`,
   vipConverted: (a) => `ptgame:vipconverted:${a}`,
   vipLock: 'ptgame:viplock',
@@ -125,17 +126,19 @@ function normAddress(a) {
 
 export async function stateOf(address) {
   const r = getRedis();
-  const [credits, played, won, points] = await Promise.all([
+  const [credits, played, won, points, vipPending] = await Promise.all([
     r.get(key.credits(address)),
     r.get(key.played(address)),
     r.get(key.won(address)),
     r.zscore(key.lb, address),
+    r.get(key.vipPending(address)),
   ]);
   return {
     credits: parseInt(credits || '0', 10),
     played: parseInt(played || '0', 10),
     won: parseInt(won || '0', 10),
     points: Math.round(parseFloat(points || '0')),
+    vipPending: parseInt(vipPending || '0', 10),
   };
 }
 
@@ -304,7 +307,7 @@ async function convertPointsToVip(address, points, gameId) {
     'NX'
   );
   if (!claimed) return; // already claimed by a previous attempt
-  await r.incrby(key.vipPending(address), points);
+  await r.multi().sadd(key.vipJobs(address), gameId).incrby(key.vipPending(address), points).exec();
 
   const wallet = getVipWallet();
   if (!wallet) return; // no signer configured: stays pending
@@ -312,23 +315,70 @@ async function convertPointsToVip(address, points, gameId) {
   const lock = await r.set(key.vipLock, gameId, 'PX', 15000, 'NX');
   if (!lock) return; // another invocation is sending; stays pending
   try {
-    const hash = await wallet.writeContract({
-      address: VIP_ADDRESS,
-      abi: VIP_ABI,
-      functionName: 'mintAdmin',
-      args: [address, BigInt(points)],
-    });
-    await r
-      .multi()
-      .set(key.vipJob(gameId), JSON.stringify({ address, points, txHash: hash, at: Date.now() }), 'XX')
-      .incrby(key.vipConverted(address), points)
-      .decrby(key.vipPending(address), points)
-      .exec();
+    await sendVipJob(r, wallet, address, points, gameId);
   } catch (e) {
     console.error('[trendplay] VIP conversion failed, left pending:', gameId, e.shortMessage || e.message);
   } finally {
     await r.del(key.vipLock);
   }
+}
+
+// Send one claimed job on-chain and settle its bookkeeping.
+async function sendVipJob(r, wallet, address, points, gameId) {
+  const hash = await wallet.writeContract({
+    address: VIP_ADDRESS,
+    abi: VIP_ABI,
+    functionName: 'mintAdmin',
+    args: [address, BigInt(points)],
+  });
+  await r
+    .multi()
+    .set(key.vipJob(gameId), JSON.stringify({ address, points, txHash: hash, at: Date.now() }), 'XX')
+    .incrby(key.vipConverted(address), points)
+    .decrby(key.vipPending(address), points)
+    .srem(key.vipJobs(address), gameId)
+    .exec();
+  return hash;
+}
+
+// Retry every unsent conversion job for an address (user-triggered from the
+// flashing Points stat, or any future cron). Safe to call repeatedly: jobs
+// that already carry a txHash are only unindexed, never re-sent.
+export async function drainVipJobs(body) {
+  const address = normAddress(body.address);
+  if (!address) return [400, { error: 'bad address' }];
+
+  const r = getRedis();
+  const pendingNow = async () => parseInt((await r.get(key.vipPending(address))) || '0', 10);
+  const wallet = getVipWallet();
+  if (!wallet) return [200, { retried: 0, vipPending: await pendingNow(), reason: 'signer not configured' }];
+
+  const lock = await r.set(key.vipLock, `drain:${address}`, 'PX', 30000, 'NX');
+  if (!lock) return [200, { retried: 0, vipPending: await pendingNow(), reason: 'busy, try again' }];
+
+  let retried = 0;
+  try {
+    const gameIds = await r.smembers(key.vipJobs(address));
+    for (const gameId of gameIds) {
+      const raw = await r.get(key.vipJob(gameId));
+      if (!raw) {
+        await r.srem(key.vipJobs(address), gameId);
+        continue;
+      }
+      const job = JSON.parse(raw);
+      if (job.txHash) {
+        await r.srem(key.vipJobs(address), gameId); // already sent, just unindex
+        continue;
+      }
+      await sendVipJob(r, wallet, job.address, job.points, gameId);
+      retried += 1;
+    }
+  } catch (e) {
+    console.error('[trendplay] VIP drain stopped:', e.shortMessage || e.message);
+  } finally {
+    await r.del(key.vipLock);
+  }
+  return [200, { retried, vipPending: await pendingNow() }];
 }
 
 async function vnsName(address) {

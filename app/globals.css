@@ -1427,3 +1427,14 @@ p {
     flex-basis: 100%;
   }
 }
+
+/* Points stat flashes red while VIP units are owed but not yet on-chain */
+@keyframes tpPointsAlert {
+  0%, 100% { color: #f87171; opacity: 1; }
+  50% { color: #f87171; opacity: 0.35; }
+}
+
+.tp-points-alert {
+  animation: tpPointsAlert 1.1s ease-in-out infinite;
+  cursor: pointer;
+}

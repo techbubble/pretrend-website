@@ -6,7 +6,7 @@ import { waitForTransactionReceipt } from 'wagmi/actions';
 import { erc20Abi } from 'viem';
 import { vitruveo } from './game-providers';
 import { GameRound } from './game-round';
-import { getGameConfig, getGameState, getLeaderboard, postBuy, postStart, postSubmit } from './api';
+import { getGameConfig, getGameState, getLeaderboard, postBuy, postDrain, postStart, postSubmit } from './api';
 import { genSeries, dealGame, clientGameView, LOCK_AT } from '../_lib/gamemath';
 import { Leaderboard } from './leaderboard';
 
@@ -39,7 +39,7 @@ export function GameApp() {
 
   const [cfg, setCfg] = useState(null);
   const [cfgError, setCfgError] = useState(null);
-  const [stats, setStats] = useState({ credits: 0, played: 0, won: 0, points: 0 });
+  const [stats, setStats] = useState({ credits: 0, played: 0, won: 0, points: 0, vipPending: 0 });
   const [lbRows, setLbRows] = useState([]);
   const [qty, setQty] = useState(5);
   const [buyStatus, setBuyStatus] = useState(null);
@@ -85,7 +85,7 @@ export function GameApp() {
     setGame(null);
     setResult(null);
     setError(null);
-    setStats({ credits: 0, played: 0, won: 0, points: 0 });
+    setStats({ credits: 0, played: 0, won: 0, points: 0, vipPending: 0 });
     refresh();
   }, [address, refresh]);
 
@@ -142,7 +142,7 @@ export function GameApp() {
     try {
       const r = await postSubmit(game.gameId, b);
       setResult(r);
-      setStats({ credits: r.credits, played: r.played, won: r.won, points: r.points });
+      setStats({ credits: r.credits, played: r.played, won: r.won, points: r.points, vipPending: r.vipPending });
       getLeaderboard().then((lb) => setLbRows(lb.rows)).catch(() => {});
     } catch (e) {
       setError(e.message);
@@ -153,6 +153,18 @@ export function GameApp() {
 
   // Test mode (localhost) skips the chain entirely — only a connected address
   // to credit is needed; every buy grants the fixed test amount.
+  // Pending VIP units = won points not yet issued on-chain; clicking the
+  // flashing Points stat retries the conversion jobs.
+  const retryVip = async () => {
+    if (!address || stats.vipPending < 1) return;
+    try {
+      await postDrain(address);
+    } catch (e) {
+      // refresh below reflects whatever actually happened
+    }
+    refresh();
+  };
+
   const canBuy = cfg?.testMode
     ? isConnected && !buyStatus
     : isConnected && onVitruveo && cfg && cfg.treasury && !buyStatus && maxCredits >= 1 && qty <= maxCredits;
@@ -193,9 +205,19 @@ export function GameApp() {
             <div className="mr-stat-label">Won</div>
             <div className="mr-stat-value">{stats.won}</div>
           </div>
-          <div className="mr-stat">
+          <div
+            className="mr-stat"
+            onClick={retryVip}
+            title={stats.vipPending > 0 ? `${stats.vipPending} units not yet on-chain — click to retry` : undefined}
+            style={stats.vipPending > 0 ? { cursor: 'pointer' } : undefined}
+          >
             <div className="mr-stat-label">Points</div>
-            <div className="mr-stat-value" style={{ color: '#e8c547' }}>{stats.points}</div>
+            <div
+              className={`mr-stat-value${stats.vipPending > 0 ? ' tp-points-alert' : ''}`}
+              style={stats.vipPending > 0 ? undefined : { color: '#e8c547' }}
+            >
+              {stats.points}
+            </div>
           </div>
         </div>
         <div className="mt-2" style={{ fontFamily: FONT, fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)' }}>
