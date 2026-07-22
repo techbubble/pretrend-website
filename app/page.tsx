@@ -263,30 +263,30 @@ export default function PretrendPage() {
           </div>
         </section>
 
-        {/* TrendPulse */}
-        <section id="trendpulse" className="section-padding bg-dark-custom">
+        {/* TrendPlay */}
+        <section id="trendplay" className="section-padding bg-dark-custom">
           <div className="container">
             <div className="row align-items-center g-5">
               <div className="col-lg-6">
-                <a href="/trendpulse">
+                <a href="/trendplay">
                   <img
-                    src="/images/trendpulse.png"
-                    alt="TrendPulse gameplay: aiming a trend line at the five outcome buckets"
+                    src="/images/trendplay.png"
+                    alt="TrendPlay gameplay: aiming a trend line at the five outcome buckets"
                     style={{ width: '100%', height: 'auto', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}
                   />
                 </a>
               </div>
               <div className="col-lg-6">
                 <h2 className="display-6 fw-bold mb-3">
-                  Feel the Trend &mdash; Play <span className="text-gradient">TrendPulse</span>
+                  Feel the Trend &mdash; Play <span className="text-gradient">TrendPlay</span>
                 </h2>
                 <p className="text-muted-custom mb-4">
-                  TrendPulse turns Pretrend&apos;s resolution engine into a sixty-second game:
+                  TrendPlay turns Pretrend&apos;s resolution engine into a sixty-second game:
                   aim your line at Crash through Moon as the prices land &mdash; the earlier
                   you call it, the more points a win pays.
                 </p>
-                <a href="/trendpulse" className="btn btn-green btn-lg">
-                  Play TrendPulse
+                <a href="/trendplay" className="btn btn-green btn-lg">
+                  Play TrendPlay
                 </a>
               </div>
             </div>

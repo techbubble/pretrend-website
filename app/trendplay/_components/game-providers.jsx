@@ -21,7 +21,7 @@ const projectId =
 
 // Vitruveo is the only supported network for the game.
 const gameWagmiConfig = getDefaultConfig({
-  appName: 'TrendPulse',
+  appName: 'TrendPlay',
   projectId,
   chains: [vitruveo],
   ssr: true,

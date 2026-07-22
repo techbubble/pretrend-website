@@ -17,7 +17,7 @@ import {
   clientGameView,
   dotCount,
   pointsAfter,
-} from '../../../trendpulse/_lib/gamemath';
+} from '../../../trendplay/_lib/gamemath';
 
 const NETWORK = process.env.VTRU_NETWORK || 'mainnet';
 const RPC_URL = process.env.VTRU_RPC_URL || 'https://rpc.vitruveo.ai';

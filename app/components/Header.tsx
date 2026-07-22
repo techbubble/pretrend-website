@@ -13,7 +13,7 @@ export default function Header() {
   const pathname = usePathname();
   // trailingSlash: true → usePathname() returns "/validators/"
   // Pages listed here must wrap Header in a wagmi/RainbowKit provider.
-  const showConnect = ['/validators', '/trendpulse'].includes(pathname?.replace(/\/+$/, '') ?? '');
+  const showConnect = ['/validators', '/trendplay'].includes(pathname?.replace(/\/+$/, '') ?? '');
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -63,7 +63,7 @@ export default function Header() {
               <a className="nav-link" href="/ols">OLS</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/trendpulse">TrendPulse</a>
+              <a className="nav-link" href="/trendplay">TrendPlay</a>
             </li>
             <li className="nav-item">
               <a className="nav-link" href="/preview">Preview</a>

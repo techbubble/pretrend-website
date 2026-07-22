@@ -5,11 +5,11 @@ import { GameProviders } from './_components/game-providers';
 import { GameApp } from './_components/game-app';
 
 export const metadata: Metadata = {
-  title: "TrendPulse | Pretrend Protocol",
-  description: "TrendPulse: buy credits with USDT.b on Vitruveo, aim your line at one of the five outcome buckets as the prices appear, and beat the regression for points.",
+  title: "TrendPlay | Pretrend Protocol",
+  description: "TrendPlay: buy credits with USDT.b on Vitruveo, aim your line at one of the five outcome buckets as the prices appear, and beat the regression for points.",
 };
 
-export default function TrendPulsePage() {
+export default function TrendPlayPage() {
   return (
     <GameProviders>
       <Header />
@@ -18,7 +18,7 @@ export default function TrendPulsePage() {
           <div className="container">
             <div className="text-center mb-5">
               <h1 className="display-4 fw-bold mb-3">
-                <span className="text-gradient">TrendPulse</span>
+                <span className="text-gradient">TrendPlay</span>
               </h1>
               <div className="card-dark tp-hero-tile p-4 mx-auto" style={{ maxWidth: '1040px' }}>
                 <img
@@ -44,7 +44,7 @@ export default function TrendPulsePage() {
                   />
                 </svg>
                 <p className="mb-0" style={{ fontSize: '1.1rem', fontWeight: 400, position: 'relative', color: '#ffffff', textShadow: '0 1px 10px rgba(0,0,0,0.85)', textWrap: 'balance' }}>
-                  TrendPulse is a game built on the same mechanics that resolve every Pretrend
+                  TrendPlay is a game built on the same mechanics that resolve every Pretrend
                   market. Each game deals a fresh 30-minute market, one closes every 2 seconds.
                   You start the round at 600 points and burn 20 per price revealed &mdash; submit
                   early for a bigger score, but the dotted OLS answer must land within 2% of
