@@ -62,11 +62,9 @@ export default function Header() {
             <li className="nav-item">
               <a className="nav-link" href="/ols">OLS</a>
             </li>
-            {/* Hidden while TrendPulse is in semi-private testing:
             <li className="nav-item">
               <a className="nav-link" href="/trendpulse">TrendPulse</a>
             </li>
-            */}
             <li className="nav-item">
               <a className="nav-link" href="/preview">Preview</a>
             </li>
