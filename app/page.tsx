@@ -263,6 +263,36 @@ export default function PretrendPage() {
           </div>
         </section>
 
+        {/* TrendPulse */}
+        <section id="trendpulse" className="section-padding bg-dark-custom">
+          <div className="container">
+            <div className="row align-items-center g-5">
+              <div className="col-lg-6">
+                <a href="/trendpulse">
+                  <img
+                    src="/images/trendpulse.png"
+                    alt="TrendPulse gameplay: aiming a trend line at the five outcome buckets"
+                    style={{ width: '100%', height: 'auto', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}
+                  />
+                </a>
+              </div>
+              <div className="col-lg-6">
+                <h2 className="display-6 fw-bold mb-3">
+                  Feel the Trend &mdash; Play <span className="text-gradient">TrendPulse</span>
+                </h2>
+                <p className="text-muted-custom mb-4">
+                  TrendPulse turns Pretrend&apos;s resolution engine into a sixty-second game:
+                  aim your line at Crash through Moon as the prices land &mdash; the earlier
+                  you call it, the more points a win pays.
+                </p>
+                <a href="/trendpulse" className="btn btn-green btn-lg">
+                  Play TrendPulse
+                </a>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* The Intersection */}
         <section id="intersection" className="section-padding bg-dark-custom position-relative">
           <div className="intersection-bg" aria-hidden="true" />
