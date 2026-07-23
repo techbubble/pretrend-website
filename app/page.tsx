@@ -227,9 +227,14 @@ export default function PretrendPage() {
               <div className="mt-5">
                 <DomainCarousel />
               </div>
-              <a href="/whitepaper" className="btn btn-outline-light btn-lg px-5 mt-5">
-                Read the Whitepaper
-              </a>
+              <div className="d-flex justify-content-center gap-3 flex-wrap mt-5">
+                <a href="/whitepaper" className="btn btn-outline-light btn-lg px-5">
+                  Read the Whitepaper
+                </a>
+                <a href="/preview" className="btn btn-green btn-lg px-5">
+                  Join Preview
+                </a>
+              </div>
             </div>
           </div>
         </section>
