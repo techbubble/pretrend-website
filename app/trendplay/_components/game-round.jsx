@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { BUCKET_NAMES } from '../../examples/_components/data/market-replays';
+import { bucketRgba } from '../../examples/_components/bucket-meta';
 import { fmtPct } from '../../ols/_components/ols-math';
 import { getTick } from './api';
 
@@ -120,18 +121,12 @@ export function GameRound({ game, result, submitting, onSubmit, onPlayAgain, can
     return y0 + ((atX - px(0)) * (y1 - y0)) / (px(n - 1) - px(0));
   };
 
-  const boxFill = (i) => {
-    if (submitted && i === trueBucket) return 'rgba(99,168,58,0.25)';
-    if (submitted && i === aimBucket && aimBucket !== trueBucket) return 'rgba(248,113,113,0.18)';
-    if (!submitted && i === aimBucket) return 'rgba(47,143,214,0.22)';
-    return 'rgba(255,255,255,0.04)';
-  };
-  const boxStroke = (i) => {
-    if (submitted && i === trueBucket) return '#63a83a';
-    if (submitted && i === aimBucket && aimBucket !== trueBucket) return 'rgba(248,113,113,0.8)';
-    if (!submitted && i === aimBucket) return '#2f8fd6';
-    return 'rgba(255,255,255,0.15)';
-  };
+  // Bucket identity colors follow the examples-page convention; the aimed /
+  // winning box lights up in its own bucket color rather than blue/green.
+  const boxActive = (i) => (submitted ? i === trueBucket || i === aimBucket : i === aimBucket);
+  const boxFill = (i) => bucketRgba(i, boxActive(i) ? 0.3 : 0.08);
+  const boxStroke = (i) => bucketRgba(i, boxActive(i) ? 1 : 0.45);
+  const boxText = (i) => (boxActive(i) ? '#ffffff' : bucketRgba(i, 0.9));
 
   const lockFrom = px(lockAt - 1);
   const shownDots = submitted ? result.series : dots;
@@ -200,7 +195,7 @@ export function GameRound({ game, result, submitting, onSubmit, onPlayAgain, can
                   x={(BX0 + BX1) / 2}
                   y={(top + bottom) / 2 + 4}
                   textAnchor="middle"
-                  fill={i === (submitted ? trueBucket : aimBucket) ? '#ffffff' : 'rgba(255,255,255,0.6)'}
+                  fill={boxText(i)}
                   fontSize="19"
                   fontWeight="600"
                   fontFamily={FONT}
@@ -292,7 +287,7 @@ export function GameRound({ game, result, submitting, onSubmit, onPlayAgain, can
               fontFamily: FONT,
               fontSize: '0.85rem',
               fontWeight: 600,
-              color: i === (submitted ? trueBucket : aimBucket) ? '#ffffff' : 'rgba(255,255,255,0.6)',
+              color: boxText(i),
             }}
           >
             {name}
