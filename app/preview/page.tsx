@@ -46,9 +46,54 @@ export default function PreviewPage() {
                   </a>
                 </div>
               </div>
-              <p className="text-muted-custom small mt-4 mb-0">
-                Access requirements for the Preview will be posted here — stay tuned.
-              </p>
+              <div className="mt-5">
+                <h2 className="h3 fw-bold mb-3">Preview Requirements</h2>
+                <p className="text-muted-custom">
+                  We&apos;re excited to bring you the Pretrend Preview soon. There&apos;s no
+                  designated go-live date yet, but expect it in August. Access is being
+                  granted to a select group of users — to be eligible, complete the
+                  following:
+                </p>
+                <ol className="text-muted-custom" style={{ lineHeight: 2 }}>
+                  <li>
+                    Hold a VIP token — obtain one at{' '}
+                    <a href="https://scope.vitruveo.ai/legacy" target="_blank" rel="noopener noreferrer" className="text-green text-decoration-none">
+                      scope.vitruveo.ai/legacy
+                    </a>{' '}
+                    by burning your legacy tokens.
+                  </li>
+                  <li>
+                    Obtain a VNS name at{' '}
+                    <a href="https://scope.vitruveo.ai/vns" target="_blank" rel="noopener noreferrer" className="text-green text-decoration-none">
+                      scope.vitruveo.ai/vns
+                    </a>.
+                  </li>
+                  <li>
+                    Bridge at least 1 USDT from BSC to USDT.b on Vitruveo via the{' '}
+                    <a href="https://scope.vitruveo.ai/bridge/usdt" target="_blank" rel="noopener noreferrer" className="text-green text-decoration-none">
+                      USDT Bridge
+                    </a>.
+                  </li>
+                  <li>
+                    Subscribe to our{' '}
+                    <a href="https://www.youtube.com/@pretrendofficial" target="_blank" rel="noopener noreferrer" className="text-green text-decoration-none">
+                      YouTube channel
+                    </a>.
+                  </li>
+                  <li>
+                    Fill out the{' '}
+                    <a href="https://forms.gle/wDmPreSY473Ut5FX6" target="_blank" rel="noopener noreferrer" className="text-green text-decoration-none">
+                      one-question form
+                    </a>.
+                  </li>
+                </ol>
+                <p className="text-muted-custom mb-0">
+                  Step 5 asks for a wallet address — provide the same wallet used for steps
+                  1, 2, and 3, since we check a single wallet for all three conditions. For
+                  step 4, use the same email address you submit in the form so we can verify
+                  your subscription.
+                </p>
+              </div>
             </div>
           </div>
         </section>
