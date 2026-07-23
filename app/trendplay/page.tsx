@@ -66,8 +66,6 @@ export default function TrendPlayPage() {
             </div>
             <GameApp />
             <p className="text-muted-custom text-center mt-3 mb-0" style={{ maxWidth: '820px', margin: '0 auto' }}>
-              The bucket boundaries are the same signed quintiles Pretrend markets resolve
-              against, and the hidden runout mirrors the Timeslope participation close.
               Curious how the answer is computed? The{' '}
               <a href="/ols" className="text-green text-decoration-none">OLS page</a> walks
               through the whole method.

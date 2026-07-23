@@ -7,9 +7,10 @@ export const STEP_MS = 2000; // one dot every 2 seconds; 30 dots = 60s game
 export const START_POINTS = 600;
 export const POINTS_PER_DOT = 20; // burned per displayed dot
 export const TOLERANCE = 0.02; // win = slope within 2% of the slider's full range
-// Signed quintiles of rolling 30-minute OLS trends (same calibration as the
-// Examples page), fixed for the game.
-export const THRESHOLDS = [-0.1705, -0.0476, 0.0409, 0.1461];
+// Five equal 20% buckets across the game's ±0.35% trend range (no historical
+// quintile calibration — this is a game, not a market).
+export const TREND_RANGE = 0.35;
+export const THRESHOLDS = [-0.21, -0.07, 0.07, 0.21];
 
 function gaussian() {
   const u = Math.random() || 1e-12;
@@ -29,7 +30,7 @@ export function genSeries() {
   const ys = [base];
   for (let i = 1; i < N; i++) ys.push(ys[i - 1] + gaussian() * sigma);
 
-  const edges = [-0.35, ...THRESHOLDS, 0.35];
+  const edges = [-TREND_RANGE, ...THRESHOLDS, TREND_RANGE];
   const bucket = Math.floor(Math.random() * 5);
   const lo = edges[bucket];
   const hi = edges[bucket + 1];
