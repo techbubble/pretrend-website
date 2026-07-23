@@ -66,10 +66,10 @@ export default function Header() {
               <a className="nav-link" href="/trendplay">TrendPlay</a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/preview">Preview</a>
-            </li>
-            <li className="nav-item">
               <a className="nav-link" href="/investors">Investors</a>
+            </li>
+            <li className="nav-item d-flex align-items-center">
+              <a href="/preview" className="btn btn-green btn-sm px-3">Join Preview</a>
             </li>
           </ul>
           {showConnect && (
