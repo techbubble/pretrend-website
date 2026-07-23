@@ -16,7 +16,7 @@ export default function TrendPlayPage() {
       <main>
         <section className="section-padding bg-dark-custom" style={{ paddingTop: '140px', paddingBottom: '40px' }}>
           <div className="container">
-            <div className="text-center mb-5">
+            <div className="text-center mb-4">
               <h1 className="display-4 fw-bold mb-3">
                 <span className="text-gradient">TrendPlay</span>
               </h1>
