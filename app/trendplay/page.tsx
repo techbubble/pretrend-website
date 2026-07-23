@@ -43,13 +43,24 @@ export default function TrendPlayPage() {
                     strokeWidth="2"
                   />
                 </svg>
-                <p className="mb-0" style={{ fontSize: '1.1rem', fontWeight: 400, position: 'relative', color: '#ffffff', textShadow: '0 1px 10px rgba(0,0,0,0.85)', textWrap: 'balance' }}>
+                <p style={{ fontSize: '1.1rem', fontWeight: 400, position: 'relative', color: '#ffffff', textShadow: '0 1px 10px rgba(0,0,0,0.85)', textWrap: 'balance' }}>
                   TrendPlay is a game built on the same mechanics that resolve every Pretrend
                   market. Each game deals a fresh 30-minute market, one closes every 2 seconds.
                   You start the round at 600 points and burn 20 per price revealed &mdash; submit
                   early for a bigger score, but the dotted OLS answer must land within 2% of
                   your line to win. At price 24 the slider locks and your line rides the
                   runout. A credit is 0.99 USDT.b on Vitruveo; each game uses 1 credit.
+                </p>
+                <p className="mb-0 fw-semibold" style={{ fontSize: '1.35rem', position: 'relative', color: '#ffffff', textShadow: '0 1px 10px rgba(0,0,0,0.85)', textWrap: 'balance' }}>
+                  Points that you win on TrendPlay are automatically converted 1:1 to{' '}
+                  <a
+                    href="https://scope.vitruveo.ai/legacy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-green"
+                  >
+                    VIP Units
+                  </a>.
                 </p>
               </div>
             </div>
