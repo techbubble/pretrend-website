@@ -245,7 +245,7 @@ export function GameApp() {
         <div className="mt-2" style={{ fontFamily: FONT, fontSize: '1rem', color: 'rgba(255,255,255,0.8)' }}>
           Buy <span className="text-white">{qty}</span> credit{qty > 1 ? 's' : ''} for{' '}
           <span className="text-white">{(qty * (cfg?.creditPriceUsdt ?? 0.99)).toFixed(2)} USDT.b</span>
-          {' '}&middot; 1 credit = {(cfg?.creditPriceUsdt ?? 0.99).toFixed(2)} USDT.b &middot; each game uses 1 credit
+          {' '}&middot; Each game uses 1 credit
           {isConnected && cfg && balance !== undefined ? (
             <> &middot; balance {(Number(balance / 10n ** BigInt(cfg.usdtDecimals - 2)) / 100).toFixed(2)} USDT.b</>
           ) : null}
