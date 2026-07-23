@@ -26,27 +26,7 @@ export default function PreviewPage() {
             </div>
 
             <div className="card-dark p-4 p-lg-5" style={{ maxWidth: '860px', margin: '0 auto' }}>
-              <h2 className="h4 fw-bold mb-3">Live now</h2>
-              <p className="text-muted-custom">
-                The Preview comes online piece by piece, and each piece appears here as it
-                ships. First up: the oracle.
-              </p>
-              <div className="d-flex align-items-center gap-4 p-3 p-md-4 rounded" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-                <div>
-                  <div className="h5 text-green mb-1">TrendPulse Oracle</div>
-                  <div className="text-muted-custom">
-                    The data engine behind Pretrend, running live: Bitcoin, Ethereum, world
-                    news sentiment, and New York weather — each feed with the OLS trend line
-                    that will settle its markets.
-                  </div>
-                </div>
-                <div className="ms-auto flex-shrink-0">
-                  <a href="/preview/trendpulse" className="btn btn-primary btn-lg px-5 py-3" style={{ fontSize: '1.35rem', fontWeight: 600 }}>
-                    View Live Status
-                  </a>
-                </div>
-              </div>
-              <div className="mt-5">
+              <div>
                 <h2 className="h3 fw-bold mb-3">Preview Requirements</h2>
                 <p className="text-muted-custom">
                   We&apos;re excited to bring you the Pretrend Preview soon. There&apos;s no
@@ -93,6 +73,28 @@ export default function PreviewPage() {
                   step 4, use the same email address you submit in the form so we can verify
                   your subscription.
                 </p>
+              </div>
+              <div className="mt-5">
+                <h2 className="h4 fw-bold mb-3">Live now</h2>
+                <p className="text-muted-custom">
+                  The Preview comes online piece by piece, and each piece appears here as it
+                  ships. First up: the oracle.
+                </p>
+                <div className="d-flex align-items-center gap-4 p-3 p-md-4 rounded" style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
+                  <div>
+                    <div className="h5 text-green mb-1">TrendPulse Oracle</div>
+                    <div className="text-muted-custom">
+                      The data engine behind Pretrend, running live: Bitcoin, Ethereum, world
+                      news sentiment, and New York weather — each feed with the OLS trend line
+                      that will settle its markets.
+                    </div>
+                  </div>
+                  <div className="ms-auto flex-shrink-0">
+                    <a href="/preview/trendpulse" className="btn btn-primary btn-lg px-5 py-3" style={{ fontSize: '1.35rem', fontWeight: 600 }}>
+                      View Live Status
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
