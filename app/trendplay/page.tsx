@@ -66,9 +66,9 @@ export default function TrendPlayPage() {
             </div>
             <GameApp />
             <p className="text-muted-custom text-center mt-3 mb-0" style={{ maxWidth: '820px', margin: '0 auto' }}>
-              Curious how the answer is computed? The{' '}
-              <a href="/ols" className="text-green text-decoration-none">OLS page</a> walks
-              through the whole method.
+              The dotted answer line is an ordinary least squares fit &mdash; the same math
+              that resolves every Pretrend market. See how it works on the{' '}
+              <a href="/ols" className="text-green text-decoration-none">OLS page</a>.
             </p>
           </div>
         </section>

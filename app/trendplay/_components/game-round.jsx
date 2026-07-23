@@ -5,6 +5,7 @@ import { BUCKET_NAMES } from '../../examples/_components/data/market-replays';
 import { bucketRgba } from '../../examples/_components/bucket-meta';
 import { fmtPct } from '../../ols/_components/ols-math';
 import { getTick } from './api';
+import { TREND_RANGE } from '../_lib/gamemath';
 
 // Chart geometry
 const PX0 = 60;
@@ -13,16 +14,10 @@ const PY0 = 25;
 const PY1 = 250;
 const BX0 = 632;
 const BX1 = 838;
-const MIN_BOX = 28;
 const FONT = "'Titillium Web',sans-serif";
 
 const CONFETTI_COLORS = ['#63a83a', '#2f8fd6', '#8fd463', '#e8c547', '#ffffff'];
 
-// Slope that produces trend t (%) for a line pivoting through the mean point.
-function slopeForTrend(t, n, ybar) {
-  const xbar = (n - 1) / 2;
-  return ((t / 100) * ybar) / ((n - 1) + (t / 100) * xbar);
-}
 
 export function GameRound({ game, result, submitting, onSubmit, onPlayAgain, canReplay, preview, onPlay, canPlay }) {
   const [b, setB] = useState(0);
@@ -89,36 +84,16 @@ export function GameRound({ game, result, submitting, onSubmit, onPlayAgain, can
   const trueBucket = submitted ? bucketOf(result.fit.trendPct) : -1;
   const delta = submitted ? Math.abs(userTrend - result.fit.trendPct) : 0;
 
-  // Bucket boundaries as endpoint prices, mapped to screen y and spaced apart.
-  const bounds = useMemo(() => {
-    const raw = thresholds.map((t) => {
-      const bt = slopeForTrend(t, n, ybar);
-      return py(ybar + (bt * (n - 1)) / 2);
-    });
-    const clamped = raw.map((v) => Math.min(PY1 - MIN_BOX, Math.max(PY0 + MIN_BOX, v)));
-    for (let i = 1; i < clamped.length; i++) {
-      clamped[i] = Math.min(clamped[i], clamped[i - 1] - MIN_BOX);
-    }
-    for (let i = clamped.length - 2; i >= 0; i--) {
-      clamped[i] = Math.max(clamped[i], clamped[i + 1] + MIN_BOX);
-    }
-    return clamped;
-  }, [game]);
+  // Five equal boxes (20% buckets), index matches BUCKET_NAMES
+  // (0 = Crash at the bottom ... 4 = Moon at the top).
+  const BOX_H = (PY1 - PY0) / 5;
+  const boxes = Array.from({ length: 5 }, (_, i) => [PY1 - (i + 1) * BOX_H, PY1 - i * BOX_H]);
 
-  // Box vertical extents, index matches BUCKET_NAMES (0 = Crash ... 4 = Moon).
-  const boxes = [
-    [bounds[0], PY1],
-    [bounds[1], bounds[0]],
-    [bounds[2], bounds[1]],
-    [bounds[3], bounds[2]],
-    [PY0, bounds[3]],
-  ];
-
-  // Screen-space extrapolation of a line into the target strip.
-  const extendY = (a, slope, atX) => {
-    const y0 = py(a);
-    const y1 = py(a + slope * (n - 1));
-    return y0 + ((atX - px(0)) * (y1 - y0)) / (px(n - 1) - px(0));
+  // Projection target: a line's trend mapped linearly onto the strip, so the
+  // dashed pointer always lands inside the bucket it would resolve to.
+  const trendToStripY = (trend) => {
+    const clamped = Math.max(-TREND_RANGE, Math.min(TREND_RANGE, trend));
+    return PY1 - ((clamped + TREND_RANGE) / (2 * TREND_RANGE)) * (PY1 - PY0);
   };
 
   // Bucket identity colors follow the examples-page convention; the aimed /
@@ -215,7 +190,7 @@ export function GameRound({ game, result, submitting, onSubmit, onPlayAgain, can
               x1={px(n - 1)}
               y1={py(userA + b * (n - 1))}
               x2={BX0 - 4}
-              y2={extendY(userA, b, BX0 - 4)}
+              y2={trendToStripY(userTrend)}
               stroke="rgba(47,143,214,0.5)"
               strokeWidth="1.5"
               strokeDasharray="3 4"
@@ -233,7 +208,7 @@ export function GameRound({ game, result, submitting, onSubmit, onPlayAgain, can
                   x1={px(n - 1)}
                   y1={py(result.fit.a + result.fit.b * (n - 1))}
                   x2={BX0 - 4}
-                  y2={extendY(result.fit.a, result.fit.b, BX0 - 4)}
+                  y2={trendToStripY(result.fit.trendPct)}
                   stroke="rgba(99,168,58,0.6)"
                   strokeWidth="1.5"
                   strokeDasharray="3 4"
