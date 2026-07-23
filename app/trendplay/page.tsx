@@ -63,6 +63,11 @@ export default function TrendPlayPage() {
                   </a>.
                 </p>
               </div>
+              <div className="tp-banner text-center mx-auto mt-4 px-3 py-4" style={{ maxWidth: '1040px' }}>
+                <div className="fw-bold text-white" style={{ fontSize: 'clamp(1.6rem, 4.5vw, 3.2rem)', letterSpacing: '0.02em', lineHeight: 1.2, textShadow: '0 2px 14px rgba(0,0,0,0.35)' }}>
+                  PLAY GAME. CO-OWN PROJECT.
+                </div>
+              </div>
             </div>
             <GameApp />
             <p className="text-muted-custom text-center mt-3 mb-0" style={{ maxWidth: '820px', margin: '0 auto' }}>

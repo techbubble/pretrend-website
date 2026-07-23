@@ -1448,3 +1448,17 @@ p {
 .tp-vip-changed {
   animation: tpVipGlow 2.4s ease-in-out infinite;
 }
+
+/* TrendPlay banner tile: animated Pretrend-gradient background */
+@keyframes tpBannerShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.tp-banner {
+  background: linear-gradient(120deg, #3f6d2c, #7abe4d, #388697, #2f8fd6, #388697, #7abe4d, #3f6d2c);
+  background-size: 320% 320%;
+  animation: tpBannerShift 9s ease-in-out infinite;
+  border-radius: 12px;
+}
