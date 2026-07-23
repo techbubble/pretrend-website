@@ -51,13 +51,13 @@ export default function TrendPlayPage() {
                   your line to win. At price 24 the slider locks and your line rides the
                   runout. A credit is 0.99 USDT.b on Vitruveo; each game uses 1 credit.
                 </p>
-                <p className="mb-0 fw-semibold" style={{ fontSize: '1.35rem', position: 'relative', color: '#ffffff', textShadow: '0 1px 10px rgba(0,0,0,0.85)', textWrap: 'balance' }}>
+                <p className="mb-0 fw-semibold" style={{ fontSize: '1.35rem', position: 'relative', color: '#f5f549', textShadow: '0 0 12px rgba(245,245,73,0.45), 0 1px 10px rgba(0,0,0,0.85)', textWrap: 'balance' }}>
                   Points that you win on TrendPlay are automatically converted 1:1 to{' '}
                   <a
                     href="https://scope.vitruveo.ai/legacy"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-green"
+                    style={{ color: '#f5f549', textDecorationLine: 'underline' }}
                   >
                     VIP Units
                   </a>.
