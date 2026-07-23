@@ -209,7 +209,7 @@ export function GameApp() {
           <button type="button" className="btn btn-primary btn-sm" onClick={buy} disabled={!canBuy}>
             {buyStatus ? BUY_LABELS[buyStatus] : 'Buy'}
           </button>
-          <div className="mr-stat ms-md-auto">
+          <div className="mr-stat">
             <div className="mr-stat-label">Played</div>
             <div className="mr-stat-value">{stats.played.toLocaleString('en-US')}</div>
           </div>
