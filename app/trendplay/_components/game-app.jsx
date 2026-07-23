@@ -211,11 +211,11 @@ export function GameApp() {
           </button>
           <div className="mr-stat ms-md-auto">
             <div className="mr-stat-label">Played</div>
-            <div className="mr-stat-value">{stats.played.toLocaleString('en-US')}</div>
+            <div className="mr-stat-value" style={{ color: '#a3a3a3' }}>{stats.played.toLocaleString('en-US')}</div>
           </div>
           <div className="mr-stat">
             <div className="mr-stat-label">Won</div>
-            <div className="mr-stat-value">{stats.won.toLocaleString('en-US')}</div>
+            <div className="mr-stat-value" style={{ color: '#4ade80' }}>{stats.won.toLocaleString('en-US')}</div>
           </div>
           <div
             className="mr-stat"
@@ -232,14 +232,14 @@ export function GameApp() {
             <div className="mr-stat-label">Points</div>
             <div
               className={`mr-stat-value${stats.vipPending > 0 && !vipRetryUsed ? ' tp-points-alert' : ''}`}
-              style={stats.vipPending > 0 ? (vipRetryUsed ? { color: '#f87171' } : undefined) : { color: '#e8c547' }}
+              style={stats.vipPending > 0 ? (vipRetryUsed ? { color: '#f87171' } : undefined) : { color: '#4ade80' }}
             >
               {stats.points.toLocaleString('en-US')}
             </div>
           </div>
           <div className={`mr-stat${vipBaseline.current !== null && stats.vipUnits !== vipBaseline.current ? ' tp-vip-changed' : ''}`}>
             <div className="mr-stat-label">VIP Units</div>
-            <div className="mr-stat-value text-white">{(stats.vipUnits ?? 0).toLocaleString('en-US')}</div>
+            <div className="mr-stat-value" style={{ color: '#8b5cf6' }}>{(stats.vipUnits ?? 0).toLocaleString('en-US')}</div>
           </div>
         </div>
         <div className="mt-2" style={{ fontFamily: FONT, fontSize: '1rem', color: 'rgba(255,255,255,0.8)' }}>
