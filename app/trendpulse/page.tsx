@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Header from '../../components/Header';
-import Footer from '../../components/Footer';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
 import { TrendPulseStatus } from './_components/trendpulse-status';
 
 export const metadata: Metadata = {
-  title: "TrendPulse | Pretrend Preview",
+  title: "TrendPulse | Pretrend Protocol",
   description: "Live status of TrendPulse, the Pretrend oracle: BTC, ETH, BNB Chain volume, news sentiment and weather feeds updating in real time with the OLS trend that resolves Pretrend markets.",
 };
 
@@ -20,7 +20,7 @@ export default function TrendPulsePage() {
                 <span className="text-gradient">TrendPulse</span> — Oracle Status
               </h1>
               <p className="lead text-muted-custom" style={{ maxWidth: '820px', margin: '0 auto', textWrap: 'balance' }}>
-                The oracle that will resolve Preview markets, watched live. Every feed runs at
+                The oracle that resolves Pretrend markets, watched live. Every feed runs at
                 its own cadence — each card explains what you&apos;re seeing and how often it moves.
               </p>
             </div>

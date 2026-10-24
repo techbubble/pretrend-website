@@ -231,8 +231,8 @@ export default function PretrendPage() {
                 <a href="/whitepaper" className="btn btn-outline-light btn-lg px-5">
                   Read the Whitepaper
                 </a>
-                <a href="/preview" className="btn btn-green btn-lg px-5">
-                  Join Preview
+                <a href="/trendplay" className="btn btn-green btn-lg px-5">
+                  Trend Play
                 </a>
               </div>
             </div>
@@ -374,12 +374,12 @@ export default function PretrendPage() {
                 },
                 {
                   q: 'Q3 2026',
-                  title: 'Smart Contracts, Libraries & SDK',
-                  desc: 'Develop and deploy the smart contracts that implement the Pretrend protocol, plus the libraries and SDK developers need to build on it.',
+                  title: 'Smart Contracts',
+                  desc: 'Develop and deploy the smart contracts that implement the Pretrend protocol.',
                   href: null,
                   cta: null,
-                  done: false,
-                  inProgress: true,
+                  done: true,
+                  inProgress: false,
                 },
                 {
                   q: 'Q4 2026',
@@ -388,7 +388,7 @@ export default function PretrendPage() {
                   href: null,
                   cta: null,
                   done: false,
-                  inProgress: false,
+                  inProgress: true,
                 },
               ].map((item, i, arr) => (
                 <div key={item.q} className="col-lg-3 col-md-6">

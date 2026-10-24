@@ -1462,3 +1462,27 @@ p {
   animation: tpBannerShift 9s ease-in-out infinite;
   border-radius: 12px;
 }
+
+/* Header: About dropdown */
+.navbar .dropdown-menu {
+  margin-top: 0;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  min-width: 12rem;
+}
+.navbar .dropdown-item {
+  padding: 0.55rem 1.25rem;
+}
+.navbar .dropdown-item:hover,
+.navbar .dropdown-item:focus {
+  color: #a3d97a;
+  background: rgba(255, 255, 255, 0.06);
+}
+@media (max-width: 767.98px) {
+  .navbar .dropdown-menu {
+    position: static;
+    float: none;
+    background: transparent;
+    border: 0;
+    padding-left: 1rem;
+  }
+}

@@ -10,10 +10,13 @@ const ConnectWallet = dynamic(() => import('../web3/ConnectWallet'), { ssr: fals
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [aboutOpen, setAboutOpen] = useState(false);
   const pathname = usePathname();
+  const cleanPath = pathname?.replace(/\/+$/, '') ?? '';
+  const isAbout = ['/about', '/whitepaper', '/ols', '/examples'].includes(cleanPath);
   // trailingSlash: true → usePathname() returns "/validators/"
   // Pages listed here must wrap Header in a wagmi/RainbowKit provider.
-  const showConnect = ['/validators', '/trendplay'].includes(pathname?.replace(/\/+$/, '') ?? '');
+  const showConnect = ['/validators', '/trendplay'].includes(cleanPath);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -49,27 +52,43 @@ export default function Header() {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className={`navbar-collapse justify-content-end ${menuOpen ? 'show' : 'collapse'}`} id="navbarNav">
-          <ul className="navbar-nav gap-md-4" onClick={() => setMenuOpen(false)}>
-            <li className="nav-item">
+          <ul className="navbar-nav gap-md-4 align-items-md-center">
+            <li className="nav-item" onClick={() => setMenuOpen(false)}>
               <a className="nav-link" href="/">Home</a>
             </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/whitepaper">Whitepaper</a>
+            <li
+              className={`nav-item dropdown ${aboutOpen ? 'show' : ''}`}
+              onMouseEnter={() => setAboutOpen(true)}
+              onMouseLeave={() => setAboutOpen(false)}
+            >
+              <a
+                className={`nav-link dropdown-toggle ${isAbout ? 'active' : ''}`}
+                href="/about"
+                role="button"
+                aria-expanded={aboutOpen}
+                onClick={(e) => {
+                  // On touch/mobile the first tap opens the menu; the About page is reachable from the menu.
+                  if (window.matchMedia('(max-width: 767.98px)').matches && !aboutOpen) {
+                    e.preventDefault();
+                    setAboutOpen(true);
+                  }
+                }}
+              >
+                About
+              </a>
+              <ul className={`dropdown-menu dropdown-menu-dark ${aboutOpen ? 'show' : ''}`} onClick={() => { setAboutOpen(false); setMenuOpen(false); }}>
+                <li><a className="dropdown-item" href="/about">About Pretrend</a></li>
+                <li><hr className="dropdown-divider" /></li>
+                <li><a className="dropdown-item" href="/whitepaper">Whitepaper</a></li>
+                <li><a className="dropdown-item" href="/ols">OLS</a></li>
+                <li><a className="dropdown-item" href="/examples">Examples</a></li>
+              </ul>
             </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/examples">Examples</a>
+            <li className="nav-item" onClick={() => setMenuOpen(false)}>
+              <a className="nav-link" href="/trendpulse">TrendPulse</a>
             </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/ols">OLS</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/trendplay">TrendPlay</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/investors">Investors</a>
-            </li>
-            <li className="nav-item d-flex align-items-center">
-              <a href="/preview" className="btn btn-green btn-sm px-3">Join Preview</a>
+            <li className="nav-item d-flex align-items-center" onClick={() => setMenuOpen(false)}>
+              <a href="/trendplay" className="btn btn-green btn-sm px-3">Trend Play</a>
             </li>
           </ul>
           {showConnect && (

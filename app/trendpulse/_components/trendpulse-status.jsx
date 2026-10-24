@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { TRENDPULSE_BASE, TRENDPULSE_SOURCES } from '../../../config/trendpulse';
+import { TRENDPULSE_BASE, TRENDPULSE_SOURCES } from '../../config/trendpulse';
 
 const REFRESH_MS = 10_000; // chart/health update cadence
 
