@@ -59,8 +59,8 @@ export const TRENDPULSE_SOURCES = [
     windowS: 30 * 60,
     windowLabel: '30-min',
     trendMode: 'abs',
-    desc: 'Native BNB moved on BNB Smart Chain, summed over every transaction in each 15-second window (about 33 blocks). A spiky on-chain activity series rather than a price \u2014 the feed behind the Preview\u2019s 5-minute BSC games.',
-    dataCadence: 'every 15 seconds',
-    attribution: 'BSC JSON-RPC (public nodes)',
+    desc: 'Native BNB moved on BNB Smart Chain, summed over every transaction in each one-second window (about two blocks). A spiky on-chain activity series rather than a price \u2014 the feed behind the Preview\u2019s 5-minute BSC games.',
+    dataCadence: 'every second',
+    attribution: 'BSC JSON-RPC (NodeReal)',
   },
 ];
