@@ -68,7 +68,7 @@ export default function AboutPage() {
                       </a>{' '}
                       as part of the Vitruveo ecosystem. The statistical engine ships inside the
                       Vitruveo protocol itself; TrendPulse, the oracle, publishes the feeds; and
-                      Trend Play is the first game built on top of them.
+                      AIWars Trends is the first game built on top of them.
                     </p>
                   </div>
                 </div>

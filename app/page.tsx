@@ -231,8 +231,8 @@ export default function PretrendPage() {
                 <a href="/whitepaper" className="btn btn-outline-light btn-lg px-5">
                   Read the Whitepaper
                 </a>
-                <a href="/trendplay" className="btn btn-green btn-lg px-5">
-                  Trend Play
+                <a href="/market/aiwars" className="btn btn-signal btn-lg px-5">
+                  AIWars Trends
                 </a>
               </div>
             </div>
@@ -269,29 +269,29 @@ export default function PretrendPage() {
         </section>
 
         {/* TrendPlay */}
-        <section id="trendplay" className="section-padding bg-dark-custom">
+        <section id="aiwars-trends" className="section-padding bg-dark-custom">
           <div className="container">
             <div className="row align-items-center g-5">
               <div className="col-lg-6">
-                <a href="/trendplay">
+                <a href="/market/aiwars">
                   <img
                     src="/images/trendplay.png"
-                    alt="TrendPlay gameplay: aiming a trend line at the five outcome buckets"
+                    alt="AIWars Trends gameplay: aiming a trend line at the five outcome buckets"
                     style={{ width: '100%', height: 'auto', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)' }}
                   />
                 </a>
               </div>
               <div className="col-lg-6">
                 <h2 className="display-6 fw-bold mb-3">
-                  Feel the Trend &mdash; Go <span className="text-gradient">TrendPlay</span>
+                  Feel the Trend &mdash; Play <span style={{ color: '#2d8cff' }}>AIWars Trends</span>
                 </h2>
                 <p className="text-muted-custom mb-4">
-                  TrendPlay turns Pretrend&apos;s resolution engine into a sixty-second game:
-                  aim your line at Crash through Moon as the prices land &mdash; the earlier
-                  you call it, the more points a win pays.
+                  AIWars Trends turns Pretrend&apos;s resolution engine into a live 5-minute game
+                  on AI Wars Battle Momentum: aim your line at Crash through Moon as the
+                  telemetry streams in &mdash; the earlier you call it, the more points a win pays.
                 </p>
-                <a href="/trendplay" className="btn btn-green btn-lg">
-                  Go TrendPlay
+                <a href="/market/aiwars" className="btn btn-signal btn-lg">
+                  AIWars Trends
                 </a>
               </div>
             </div>

@@ -1,6 +1,6 @@
 'use client';
 
-const FONT = "'Titillium Web',sans-serif";
+const FONT = 'var(--aw-mono), ui-monospace, monospace';
 
 function shortAddr(a) {
   return `${a.slice(0, 6)}…${a.slice(-4)}`;
@@ -10,8 +10,8 @@ export function Leaderboard({ rows, myAddress }) {
   if (!rows?.length) return null;
 
   return (
-    <div className="card-dark p-3 p-md-4 mt-4">
-      <h2 className="h4 fw-bold mb-3">Leaderboard</h2>
+    <div className="aw-panel p-3 p-md-4 mt-4">
+      <h2 className="aw-kicker mb-3" style={{ fontSize: '0.95rem' }}>Leaderboard</h2>
       <div className="table-responsive">
         <table className="ols-table" style={{ width: '100%' }}>
           <thead>
@@ -25,7 +25,7 @@ export function Leaderboard({ rows, myAddress }) {
             {rows.map((row, i) => {
               const mine = myAddress && row.address.toLowerCase() === myAddress.toLowerCase();
               return (
-                <tr key={row.address} style={mine ? { color: '#7abe4d' } : undefined}>
+                <tr key={row.address} style={mine ? { color: '#2d8cff' } : undefined}>
                   <td>{i + 1}</td>
                   <td style={{ fontFamily: FONT }}>
                     {row.name ? (

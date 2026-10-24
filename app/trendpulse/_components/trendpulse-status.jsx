@@ -45,7 +45,7 @@ function fmtTime(ts) {
 
 const FONT = "'Titillium Web',sans-serif";
 
-function LiveChart({ label, name, points, unit, windowLabel, trendMode, color = '#63a83a', labelColor = '#a3d97a', trendColor = '#2f8fd6' }) {
+function LiveChart({ label, name, points, unit, windowLabel, trendMode, color = '#63a83a', labelColor = '#a3d97a', trendColor = '#2f8fd6', headlineColor = 'rgba(255,255,255,0.7)' }) {
   const W = 720;
   const H = 300;
   const X0 = 60;
@@ -92,7 +92,7 @@ function LiveChart({ label, name, points, unit, windowLabel, trendMode, color = 
       <text x={px(last[0]) - 9} y={(py(last[1]) - 10).toFixed(1)} textAnchor="end" fill={labelColor} fontSize="13" fontWeight="600" fontFamily={FONT} stroke="#0a0f0a" strokeWidth="3" paintOrder="stroke" style={{ fontVariantNumeric: 'tabular-nums' }}>
         {fmtValue(last[1], unit)}
       </text>
-      <text x={X0} y={16} fill="rgba(255,255,255,0.7)" fontSize="13" fontWeight="600" fontFamily={FONT}>
+      <text x={X0} y={16} fill={headlineColor} fontSize="13" fontWeight="600" fontFamily={FONT}>
         {name} <tspan fill="rgba(255,255,255,0.4)" fontWeight="400">{label}</tspan>
       </text>
       {fit && (
@@ -194,10 +194,10 @@ export function TrendPulseStatus() {
         <div key={s.key} className="card-dark p-3 p-md-4 mb-4">
           <div className="tps-row">
             <div className="tps-chart">
-              <LiveChart label={s.label} name={s.name} points={series[s.key]} unit={s.unit} windowLabel={s.windowLabel} trendMode={s.trendMode} color={s.color} labelColor={s.labelColor} trendColor={s.trendColor} />
+              <LiveChart label={s.label} name={s.name} points={series[s.key]} unit={s.unit} windowLabel={s.windowLabel} trendMode={s.trendMode} color={s.color} labelColor={s.labelColor} trendColor={s.trendColor} headlineColor={s.headlineColor} />
             </div>
             <div className="tps-info">
-              <div className="tps-info-title">{s.name}</div>
+              <div className="tps-info-title" style={s.headlineColor ? { color: s.headlineColor } : undefined}>{s.name}</div>
               <p className="tps-info-desc">{s.desc}</p>
               <dl className="tps-info-meta">
                 <dt>Trend</dt><dd>OLS, {s.windowLabel} window</dd>

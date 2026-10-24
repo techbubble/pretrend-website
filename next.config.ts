@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   trailingSlash: true,
+  async redirects() {
+    return [{ source: '/trendplay', destination: '/market/aiwars', permanent: true }];
+  },
 };
 
 export default nextConfig;

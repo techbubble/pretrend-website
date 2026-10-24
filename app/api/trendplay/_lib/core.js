@@ -1,6 +1,6 @@
-// Server core for the trend game: Redis-backed credits/points ledger,
-// timed dot reveal, leaderboard with VNS names, and on-chain USDT.b purchase
-// verification. Runs inside Next route handlers on Vercel; Redis comes from
+// Server core for the live trend game: Redis-backed credits/points ledger,
+// 5-minute aiwars-momentum game windows settled against the TrendPulse oracle,
+// leaderboard with VNS names, and on-chain USDT.b purchase verification. Runs inside Next route handlers on Vercel; Redis comes from
 // the marketplace integration (REDIS_URL).
 
 import crypto from 'crypto';
@@ -9,22 +9,27 @@ import { createPublicClient, createWalletClient, defineChain, http, getAddress, 
 import { privateKeyToAccount } from 'viem/accounts';
 import contracts from '../../../../config/vtru-contracts.json';
 import {
-  N,
-  LOCK_AT,
+  SOURCE,
+  GAME_S,
+  LOCK_S,
+  SETTLE_DELAY_S,
   TOLERANCE,
-  genSeries,
-  olsFit,
-  dealGame,
-  clientGameView,
-  dotCount,
-  pointsAfter,
-} from '../../../trendplay/_lib/gamemath';
+  MIN_SETTLE_POINTS,
+  gameStartFor,
+  gameIdFor,
+  parseGameId,
+  tsOls,
+  bLimitFor,
+  pointsAt,
+  phaseOf,
+} from '../../../market/aiwars/_lib/gamemath';
+import { fetchSeries, getCalibration } from './live';
 
 const NETWORK = process.env.VTRU_NETWORK || 'mainnet';
 const RPC_URL = process.env.VTRU_RPC_URL || 'https://rpc.vitruveo.ai';
 const TREASURY = process.env.TREASURY_ADDRESS || '';
 const BRIDGE_URL = 'https://scope.vitruveo.ai/bridge/usdt';
-const GAME_TTL = 3600; // seconds
+const GAME_TTL = 86400; // seconds; live game entries and settled fits
 const VNS_TTL = 86400; // seconds; VNS name cache
 const LEADERBOARD_SIZE = 20;
 const TEST_CREDITS = 5;
@@ -121,7 +126,9 @@ const key = {
   played: (a) => `ptgame:played:${a}`,
   won: (a) => `ptgame:won:${a}`,
   tx: (h) => `ptgame:tx:${h}`,
-  game: (id) => `ptgame:game:${id}`,
+  entry: (start, a) => `ptgame:live:${start}:${a}`,
+  fit: (start) => `ptgame:live:fit:${start}`,
+  settled: (start, a) => `ptgame:live:settled:${start}:${a}`,
   lb: 'ptgame:lb',
   vns: (a) => `ptgame:vns:${a}`,
   vipJob: (id) => `ptgame:vipjob:${id}`,
@@ -233,81 +240,205 @@ export async function handleBuy(body) {
   }
 }
 
+const nowS = () => Math.floor(Date.now() / 1000);
+
+// Public description of the live game clock and bucket calibration.
+export async function handleLive() {
+  let redis = null;
+  try { redis = getRedis(); } catch (e) { /* calibration still works without Redis */ }
+  const cal = await getCalibration(redis);
+  const now = nowS();
+  const start = gameStartFor(now);
+  return [
+    200,
+    {
+      source: SOURCE,
+      gameS: GAME_S,
+      lockS: LOCK_S,
+      settleDelayS: SETTLE_DELAY_S,
+      serverNow: now,
+      start,
+      gameId: gameIdFor(start),
+      phase: phaseOf(start, now),
+      thresholds: cal.thresholds,
+      bLimit: bLimitFor(cal.thresholds),
+      calibration: { windows: cal.windows, calibratedAt: cal.calibratedAt, fallback: !!cal.fallback },
+    },
+  ];
+}
+
+// Join the current 5-minute window. One credit per window per address; a
+// second call during the same window returns the existing entry unchanged.
 export async function handleStart(body) {
   const address = normAddress(body.address);
   if (!address) return [400, { error: 'bad address' }];
 
   const r = getRedis();
+  const now = nowS();
+  const start = gameStartFor(now);
+  if (phaseOf(start, now) !== 'open') {
+    return [423, { error: 'betting is closed for this game', nextStart: start + GAME_S }];
+  }
+
+  const existing = await r.get(key.entry(start, address));
+  if (existing) {
+    const e = JSON.parse(existing);
+    const credits = parseInt((await r.get(key.credits(address))) || '0', 10);
+    return [200, { ...entryView(e), credits }];
+  }
+
   const remaining = await r.decr(key.credits(address));
   if (remaining < 0) {
     await r.incr(key.credits(address));
     return [402, { error: 'no credits' }];
   }
 
-  const ys = genSeries();
-  const deal = dealGame(ys);
-  const gameId = crypto.randomUUID();
-  const startedAt = Date.now();
-  await r.set(
-    key.game(gameId),
-    JSON.stringify({ address, ys, bLimit: deal.bLimit, startedAt }),
-    'EX',
-    GAME_TTL
-  );
-
-  return [200, { gameId, ...clientGameView(ys, deal, 1), credits: remaining }];
+  const cal = await getCalibration(r);
+  const entry = {
+    address,
+    start,
+    joinedAt: now,
+    thresholds: cal.thresholds,
+    bLimit: bLimitFor(cal.thresholds),
+    b: null,
+    k: null,
+  };
+  const fresh = await r.set(key.entry(start, address), JSON.stringify(entry), 'EX', GAME_TTL, 'NX');
+  if (!fresh) {
+    // raced with another tab: refund and hand back the entry that won
+    await r.incr(key.credits(address));
+    const e = JSON.parse(await r.get(key.entry(start, address)));
+    const credits = parseInt((await r.get(key.credits(address))) || '0', 10);
+    return [200, { ...entryView(e), credits }];
+  }
+  return [200, { ...entryView(entry), credits: remaining }];
 }
 
-// Timed reveal: which dots are visible right now, on the server clock.
-export async function handleTick(gameId) {
-  if (!gameId) return [400, { error: 'bad gameId' }];
-  const r = getRedis();
-  const raw = await r.get(key.game(gameId));
-  if (!raw) return [410, { error: 'game not found or already submitted' }];
+function entryView(e) {
+  return {
+    gameId: gameIdFor(e.start),
+    start: e.start,
+    gameS: GAME_S,
+    lockS: LOCK_S,
+    settleDelayS: SETTLE_DELAY_S,
+    thresholds: e.thresholds,
+    bLimit: e.bLimit,
+    joinedAt: e.joinedAt,
+    b: e.b,
+    k: e.k,
+    submitted: e.b !== null && e.b !== undefined,
+  };
+}
 
-  const { ys, startedAt } = JSON.parse(raw);
-  const k = dotCount(startedAt, Date.now());
-  const locked = k >= LOCK_AT;
+// Record the player's slope. Accepted until the lock (plus a short grace for
+// the client's auto-submit at the lock); one submission per game.
+export async function handleSubmit(body) {
+  const start = parseGameId(body.gameId);
+  const address = normAddress(body.address);
+  const b = Number(body.b);
+  if (start === null || !address || !Number.isFinite(b)) return [400, { error: 'bad gameId, address or b' }];
+
+  const r = getRedis();
+  const raw = await r.get(key.entry(start, address));
+  if (!raw) return [410, { error: 'not in this game' }];
+  const entry = JSON.parse(raw);
+  if (entry.b !== null && entry.b !== undefined) return [409, { error: 'already submitted' }];
+
+  const now = Date.now() / 1000;
+  const elapsed = now - start;
+  if (elapsed > LOCK_S + 3) return [423, { error: 'betting is closed' }];
+
+  entry.b = Math.max(-entry.bLimit, Math.min(entry.bLimit, b));
+  entry.k = Math.max(0, Math.min(LOCK_S, Math.floor(elapsed)));
+  entry.submittedAt = now;
+  await r.set(key.entry(start, address), JSON.stringify(entry), 'EX', GAME_TTL, 'XX');
+  return [200, { accepted: true, k: entry.k, pointsIfWin: pointsAt(entry.k), settlesAt: start + GAME_S + SETTLE_DELAY_S }];
+}
+
+// Game clock and, once the window has ended, the settled result.
+export async function handleTick(gameId, addressRaw) {
+  const start = parseGameId(gameId);
+  const address = normAddress(addressRaw);
+  if (start === null || !address) return [400, { error: 'bad gameId or address' }];
+
+  const r = getRedis();
+  const now = nowS();
+  const phase = phaseOf(start, now);
+  const raw = await r.get(key.entry(start, address));
+  if (!raw) return [410, { error: 'not in this game' }];
+  let entry = JSON.parse(raw);
+
+  if (phase !== 'ended') {
+    return [200, { phase, serverNow: now, ...entryView(entry), pointsNow: pointsAt(now - start) }];
+  }
+
+  if (!entry.settled) entry = await settleEntry(r, entry);
+  const fitRec = await settledFit(r, start);
+  const state = await stateOf(address);
   return [
     200,
     {
-      k,
-      dots: ys.slice(0, Math.min(k, LOCK_AT)), // the runout stays hidden
-      locked,
-      pointsNow: pointsAfter(Math.min(k, LOCK_AT)),
+      phase,
+      serverNow: now,
+      ...entryView(entry),
+      settled: true,
+      void: !!entry.void,
+      win: !!entry.win,
+      pointsWon: entry.points || 0,
+      series: fitRec.series,
+      fit: fitRec.fit,
+      ...state,
     },
   ];
 }
 
-export async function handleSubmit(body) {
-  const gameId = typeof body.gameId === 'string' ? body.gameId : '';
-  const b = Number(body.b);
-  if (!gameId || !Number.isFinite(b)) return [400, { error: 'bad gameId or b' }];
+// The window's final series and OLS fit, fetched from the oracle once and
+// shared by every player of that window.
+async function settledFit(r, start) {
+  const cached = await r.get(key.fit(start));
+  if (cached) return JSON.parse(cached);
+  const series = await fetchSeries(start, start + GAME_S - 1);
+  series.sort((x, y) => x[0] - y[0]);
+  const fit = series.length >= MIN_SETTLE_POINTS ? tsOls(series, start) : null; // x measured from window start, as drawn
+  const rec = { series, fit, void: !fit };
+  await r.set(key.fit(start), JSON.stringify(rec), 'EX', GAME_TTL);
+  return rec;
+}
 
-  const r = getRedis();
-  const raw = await r.getdel(key.game(gameId));
-  if (!raw) return [410, { error: 'game not found or already submitted' }];
+// Settle one player's entry exactly once. A void game (oracle gap) refunds
+// the credit instead of counting as a loss.
+async function settleEntry(r, entry) {
+  const { address, start } = entry;
+  const claimed = await r.set(key.settled(start, address), '1', 'EX', GAME_TTL, 'NX');
+  if (!claimed) {
+    // another request is settling or has settled; wait briefly and re-read
+    for (let i = 0; i < 10; i++) {
+      await new Promise((res) => setTimeout(res, 200));
+      const e = JSON.parse((await r.get(key.entry(start, address))) || 'null');
+      if (e?.settled) return e;
+    }
+    return { ...entry, settled: true, win: false, points: 0 };
+  }
 
-  const { address, ys, bLimit, startedAt } = JSON.parse(raw);
-  const fit = olsFit(ys);
-  const win = Math.abs(b - fit.b) <= TOLERANCE * 2 * bLimit;
-  // Points burn per displayed dot, on the server clock, capped at the lock.
-  const k = Math.min(dotCount(startedAt, Date.now()), LOCK_AT);
-  const points = win ? pointsAfter(k) : 0;
+  const fitRec = await settledFit(r, start);
+  const submitted = entry.b !== null && entry.b !== undefined;
+  const win = !fitRec.void && submitted && Math.abs(entry.b - fitRec.fit.b) <= TOLERANCE * 2 * entry.bLimit;
+  const points = win ? pointsAt(entry.k) : 0;
 
-  await Promise.all([
-    r.incr(key.played(address)),
-    win ? r.incr(key.won(address)) : Promise.resolve(),
-    points > 0 ? r.zincrby(key.lb, points, address) : Promise.resolve(),
-  ]);
-  if (points > 0) await convertPointsToVip(address, points, gameId);
+  if (fitRec.void) {
+    await r.incr(key.credits(address));
+  } else {
+    await Promise.all([
+      r.incr(key.played(address)),
+      win ? r.incr(key.won(address)) : Promise.resolve(),
+      points > 0 ? r.zincrby(key.lb, points, address) : Promise.resolve(),
+    ]);
+    if (points > 0) await convertPointsToVip(address, points, `${gameIdFor(start)}:${address}`);
+  }
 
-  const state = await stateOf(address);
-  // pointsWon = this game's award; state.points = the running total.
-  return [
-    200,
-    { series: ys, fit: { a: fit.a, b: fit.b, trendPct: fit.trendPct }, win, pointsWon: points, k, ...state },
-  ];
+  const settled = { ...entry, settled: true, void: fitRec.void, win, points, settledAt: nowS() };
+  await r.set(key.entry(start, address), JSON.stringify(settled), 'EX', GAME_TTL);
+  return settled;
 }
 
 // Silent Web2 -> Web3 conversion: every point won becomes a VIP unit via

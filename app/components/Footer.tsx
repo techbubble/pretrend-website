@@ -25,7 +25,7 @@ export default function Footer({ disclaimer }: { disclaimer?: string }) {
             <a href="/ols">OLS</a>
             <a href="/examples">Examples</a>
             <a href="/trendpulse">TrendPulse</a>
-            <a href="/trendplay">Trend Play</a>
+            <a href="/market/aiwars">AIWars Trends</a>
             <a href="mailto:info@verticalfoundation.net">Contact</a>
           </div>
         </div>
