@@ -63,4 +63,16 @@ export const TRENDPULSE_SOURCES = [
     dataCadence: 'every second',
     attribution: 'BSC JSON-RPC (NodeReal)',
   },
+  {
+    key: 'bsc-txs',
+    label: 'BSC \u00b7 TRANSACTIONS PER SECOND',
+    name: 'BNB Chain Transaction Rate',
+    unit: 'txs',
+    windowS: 30 * 60,
+    windowLabel: '30-min',
+    trendMode: 'abs',
+    desc: 'Transactions confirmed on BNB Smart Chain each second (about two blocks). Steadier than transfer volume but never still \u2014 the slope crosses buckets many times in a 5-minute game.',
+    dataCadence: 'every second',
+    attribution: 'BSC JSON-RPC (NodeReal)',
+  },
 ];

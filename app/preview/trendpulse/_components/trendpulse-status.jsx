@@ -33,6 +33,7 @@ function fmtValue(v, unit) {
   if (unit === 'tone') return `${v >= 0 ? '+' : ''}${v.toFixed(3)}`;
   if (unit === 'celsius') return `${v.toFixed(1)}\u00b0C`;
   if (unit === 'bnb') return `${v.toLocaleString('en-US', { maximumFractionDigits: 1 })} BNB`;
+  if (unit === 'txs') return `${v.toLocaleString('en-US', { maximumFractionDigits: 0 })} txs`;
   return `$${v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
@@ -96,7 +97,7 @@ function LiveChart({ label, name, points, unit, windowLabel, trendMode }) {
       {fit && (
         <text x={X1} y={16} textAnchor="end" fill="#2f8fd6" fontSize="12" fontFamily={FONT}>
           {windowLabel} OLS trend: {trendMode === 'abs'
-            ? `${fit.y1 - fit.y0 >= 0 ? '+' : ''}${(fit.y1 - fit.y0).toFixed(unit === 'celsius' || unit === 'bnb' ? 1 : 3)}${unit === 'celsius' ? '\u00b0C' : unit === 'bnb' ? ' BNB' : ''}`
+            ? `${fit.y1 - fit.y0 >= 0 ? '+' : ''}${(fit.y1 - fit.y0).toFixed(unit === 'celsius' || unit === 'bnb' ? 1 : unit === 'txs' ? 0 : 3)}${unit === 'celsius' ? '\u00b0C' : unit === 'bnb' ? ' BNB' : unit === 'txs' ? ' txs' : ''}`
             : `${fit.trendPct >= 0 ? '+' : ''}${fit.trendPct.toFixed(3)}%`}
         </text>
       )}
