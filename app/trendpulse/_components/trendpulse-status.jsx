@@ -34,6 +34,7 @@ function fmtValue(v, unit) {
   if (unit === 'celsius') return `${v.toFixed(1)}\u00b0C`;
   if (unit === 'bnb') return `${v.toLocaleString('en-US', { maximumFractionDigits: 1 })} BNB`;
   if (unit === 'txs') return `${v.toLocaleString('en-US', { maximumFractionDigits: 0 })} txs`;
+  if (unit === 'momentum') return v.toFixed(1);
   return `$${v.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 }
 
@@ -44,7 +45,7 @@ function fmtTime(ts) {
 
 const FONT = "'Titillium Web',sans-serif";
 
-function LiveChart({ label, name, points, unit, windowLabel, trendMode }) {
+function LiveChart({ label, name, points, unit, windowLabel, trendMode, color = '#63a83a', labelColor = '#a3d97a', trendColor = '#2f8fd6' }) {
   const W = 720;
   const H = 300;
   const X0 = 60;
@@ -75,29 +76,29 @@ function LiveChart({ label, name, points, unit, windowLabel, trendMode }) {
   return (
     <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`${name} over the chart window with its OLS trend`} style={{ width: '100%', height: 'auto', display: 'block' }}>
       <line x1={X0} y1={Y1} x2={X1} y2={Y1} stroke="rgba(255,255,255,0.18)" strokeWidth="1" />
-      <polyline points={line} fill="none" stroke="#63a83a" strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
+      <polyline points={line} fill="none" stroke={color} strokeWidth="2" strokeLinejoin="round" strokeLinecap="round" />
       {fit && (
         <line
           x1={px(tMin)}
           y1={py(fit.y0).toFixed(1)}
           x2={px(tMax)}
           y2={py(fit.y1).toFixed(1)}
-          stroke="#2f8fd6"
+          stroke={trendColor}
           strokeWidth="2"
           strokeDasharray="6 5"
         />
       )}
-      <circle cx={px(last[0]).toFixed(1)} cy={py(last[1]).toFixed(1)} r="3.5" fill="#63a83a" stroke="#0a0f0a" strokeWidth="1.5" />
-      <text x={px(last[0]) - 9} y={(py(last[1]) - 10).toFixed(1)} textAnchor="end" fill="#a3d97a" fontSize="13" fontWeight="600" fontFamily={FONT} stroke="#0a0f0a" strokeWidth="3" paintOrder="stroke" style={{ fontVariantNumeric: 'tabular-nums' }}>
+      <circle cx={px(last[0]).toFixed(1)} cy={py(last[1]).toFixed(1)} r="3.5" fill={color} stroke="#0a0f0a" strokeWidth="1.5" />
+      <text x={px(last[0]) - 9} y={(py(last[1]) - 10).toFixed(1)} textAnchor="end" fill={labelColor} fontSize="13" fontWeight="600" fontFamily={FONT} stroke="#0a0f0a" strokeWidth="3" paintOrder="stroke" style={{ fontVariantNumeric: 'tabular-nums' }}>
         {fmtValue(last[1], unit)}
       </text>
       <text x={X0} y={16} fill="rgba(255,255,255,0.7)" fontSize="13" fontWeight="600" fontFamily={FONT}>
         {name} <tspan fill="rgba(255,255,255,0.4)" fontWeight="400">{label}</tspan>
       </text>
       {fit && (
-        <text x={X1} y={16} textAnchor="end" fill="#2f8fd6" fontSize="12" fontFamily={FONT}>
+        <text x={X1} y={16} textAnchor="end" fill={trendColor} fontSize="12" fontFamily={FONT}>
           {windowLabel} OLS trend: {trendMode === 'abs'
-            ? `${fit.y1 - fit.y0 >= 0 ? '+' : ''}${(fit.y1 - fit.y0).toFixed(unit === 'celsius' || unit === 'bnb' ? 1 : unit === 'txs' ? 0 : 3)}${unit === 'celsius' ? '\u00b0C' : unit === 'bnb' ? ' BNB' : unit === 'txs' ? ' txs' : ''}`
+            ? `${fit.y1 - fit.y0 >= 0 ? '+' : ''}${(fit.y1 - fit.y0).toFixed(unit === 'celsius' || unit === 'bnb' || unit === 'momentum' ? 1 : unit === 'txs' ? 0 : 3)}${unit === 'celsius' ? '\u00b0C' : unit === 'bnb' ? ' BNB' : unit === 'txs' ? ' txs' : ''}`
             : `${fit.trendPct >= 0 ? '+' : ''}${fit.trendPct.toFixed(3)}%`}
         </text>
       )}
@@ -193,7 +194,7 @@ export function TrendPulseStatus() {
         <div key={s.key} className="card-dark p-3 p-md-4 mb-4">
           <div className="tps-row">
             <div className="tps-chart">
-              <LiveChart label={s.label} name={s.name} points={series[s.key]} unit={s.unit} windowLabel={s.windowLabel} trendMode={s.trendMode} />
+              <LiveChart label={s.label} name={s.name} points={series[s.key]} unit={s.unit} windowLabel={s.windowLabel} trendMode={s.trendMode} color={s.color} labelColor={s.labelColor} trendColor={s.trendColor} />
             </div>
             <div className="tps-info">
               <div className="tps-info-title">{s.name}</div>

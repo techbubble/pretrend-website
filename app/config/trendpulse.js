@@ -4,6 +4,21 @@ export const TRENDPULSE_BASE = 'https://d3ulpbw76ladhl.cloudfront.net';
 
 export const TRENDPULSE_SOURCES = [
   {
+    key: 'aiwars-momentum',
+    label: 'AI WARS \u00b7 BATTLE MOMENTUM',
+    name: 'AI Wars Battle Momentum',
+    unit: 'momentum',
+    windowS: 30 * 60,
+    windowLabel: '30-min',
+    trendMode: 'abs',
+    color: '#2f8fd6',
+    labelColor: '#8fc6f5',
+    trendColor: '#e8c547',
+    desc: 'Battle Momentum from the Fall of Meridian: a 0\u2013100 composite of combat tempo, machine pressure, infrastructure and enemy reinforcement, read every 2 seconds. Simulated telemetry until the game\u2019s live feed is wired in \u2014 the feed behind the AI Wars 5-minute markets.',
+    dataCadence: 'every 2 seconds',
+    attribution: 'AI Wars telemetry (simulated)',
+  },
+  {
     key: 'bsc-txs',
     label: 'BSC \u00b7 TRANSACTIONS PER SECOND',
     name: 'BNB Chain Transaction Rate',
