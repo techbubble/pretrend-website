@@ -51,4 +51,16 @@ export const TRENDPULSE_SOURCES = [
     dataCadence: 'every 15 minutes',
     attribution: 'Open-Meteo',
   },
+  {
+    key: 'bsc-volume',
+    label: 'BSC \u00b7 NATIVE BNB VOLUME',
+    name: 'BNB Chain Transfer Volume',
+    unit: 'bnb',
+    windowS: 30 * 60,
+    windowLabel: '30-min',
+    trendMode: 'abs',
+    desc: 'Native BNB moved on BNB Smart Chain, summed over every transaction in each 15-second window (about 33 blocks). A spiky on-chain activity series rather than a price \u2014 the feed behind the Preview\u2019s 5-minute BSC games.',
+    dataCadence: 'every 15 seconds',
+    attribution: 'BSC JSON-RPC (public nodes)',
+  },
 ];

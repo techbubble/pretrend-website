@@ -84,9 +84,9 @@ export default function PreviewPage() {
                   <div>
                     <div className="h5 text-green mb-1">TrendPulse Oracle</div>
                     <div className="text-muted-custom">
-                      The data engine behind Pretrend, running live: Bitcoin, Ethereum, world
-                      news sentiment, and New York weather — each feed with the OLS trend line
-                      that will settle its markets.
+                      The data engine behind Pretrend, running live: Bitcoin, Ethereum, BNB
+                      Chain transfer volume, world news sentiment, and New York weather — each
+                      feed with the OLS trend line that will settle its markets.
                     </div>
                   </div>
                   <div className="ms-auto flex-shrink-0">
