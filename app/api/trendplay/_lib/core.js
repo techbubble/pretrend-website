@@ -8,6 +8,7 @@ import Redis from 'ioredis';
 import { createPublicClient, createWalletClient, defineChain, http, getAddress, erc20Abi, parseEventLogs } from 'viem';
 import { privateKeyToAccount } from 'viem/accounts';
 import contracts from '../../../../config/vtru-contracts.json';
+import aiwars from '../../../../config/aiwars-contracts.json';
 import {
   SOURCE,
   GAME_S,
@@ -41,6 +42,8 @@ const TEST_MODE = process.env.GAME_TEST_MODE === '1' || process.env.NODE_ENV ===
 const USDT_ADDRESS = getAddress(contracts[NETWORK].BridgedUSDT);
 const VNS_REGISTRAR = getAddress(contracts[NETWORK].VNSRegistrar);
 const VIP_ADDRESS = getAddress(contracts[NETWORK].VIP);
+const AIWARS_NFT = getAddress(aiwars.vitruveo.AIWarsNFT);
+const ELIGIBLE_TTL = 600; // seconds; on-chain holding re-checked after this
 const VIP_ABI = [
   {
     type: 'function',
@@ -136,6 +139,8 @@ const key = {
   vipPending: (a) => `ptgame:vippending:${a}`,
   vipConverted: (a) => `ptgame:vipconverted:${a}`,
   vipLock: 'ptgame:viplock',
+  approved: (a) => `ptgame:approved:${a}`, // first AI Wars token seen for this wallet
+  eligible: (a) => `ptgame:eligible:${a}`, // short-lived on-chain holding cache
 };
 
 function normAddress(a) {
@@ -242,6 +247,58 @@ export async function handleBuy(body) {
 
 const nowS = () => Math.floor(Date.now() / 1000);
 
+// Playing requires at least one AI Wars Archive Shard (ERC-721 on Vitruveo)
+// in the connected wallet. The first token seen is registered as the
+// wallet's approval; the holding itself is re-checked on-chain periodically.
+async function readHolding(address) {
+  const balance = await chain.readContract({ address: AIWARS_NFT, abi: aiwars.abi.AIWarsNFT, functionName: 'balanceOf', args: [address] });
+  if (balance < 1n) return { eligible: false, tokenId: null, balance: 0 };
+  let tokenId = null;
+  try {
+    tokenId = Number(await chain.readContract({ address: AIWARS_NFT, abi: aiwars.abi.AIWarsNFT, functionName: 'tokenOfOwnerByIndex', args: [address, 0n] }));
+  } catch (e) {
+    // non-enumerable fallback: still eligible, id unknown
+  }
+  return { eligible: true, tokenId, balance: Number(balance) };
+}
+
+export async function handleEligibility(addressRaw) {
+  const address = normAddress(addressRaw);
+  if (!address) return [400, { error: 'bad address' }];
+  const r = getRedis();
+  const holding = await readHolding(address);
+  let approved = JSON.parse((await r.get(key.approved(address))) || 'null');
+  if (holding.eligible) {
+    if (!approved) {
+      approved = { tokenId: holding.tokenId, registeredAt: nowS() };
+      await r.set(key.approved(address), JSON.stringify(approved));
+    }
+    await r.set(key.eligible(address), '1', 'EX', ELIGIBLE_TTL);
+  } else {
+    await r.del(key.eligible(address));
+  }
+  return [200, { ...holding, tokenId: holding.tokenId ?? approved?.tokenId ?? null, registeredAt: approved?.registeredAt ?? null, nft: AIWARS_NFT, mintUrl: aiwars.mintUrl }];
+}
+
+async function isEligible(r, address) {
+  if (await r.get(key.eligible(address))) return true;
+  const h = await readHolding(address).catch(() => ({ eligible: false }));
+  if (h.eligible) await r.set(key.eligible(address), '1', 'EX', ELIGIBLE_TTL);
+  return h.eligible;
+}
+
+// Server-side relay to the AI Wars fulfiller (mints paid-but-unminted shards
+// on Vitruveo). It trusts nothing from us; we only trigger a pass.
+export async function handleFulfill(body) {
+  const address = normAddress(body.address);
+  if (!address) return [400, { error: 'bad address' }];
+  const res = await fetch(aiwars.fulfillUrl, { method: 'POST', redirect: 'follow' });
+  if (!res.ok) return [502, { error: `fulfiller ${res.status}` }];
+  const data = await res.json().catch(() => ({ minted: [] }));
+  const mine = (data.minted || []).filter((m) => (m.to || '').toLowerCase() === address.toLowerCase()).map((m) => m.tokenId);
+  return [200, { minted: mine, total: (data.minted || []).length }];
+}
+
 // Public description of the live game clock and bucket calibration.
 export async function handleLive() {
   let redis = null;
@@ -278,6 +335,10 @@ export async function handleStart(body) {
   const start = gameStartFor(now);
   if (phaseOf(start, now) !== 'open') {
     return [423, { error: 'betting is closed for this game', nextStart: start + GAME_S }];
+  }
+
+  if (!(await isEligible(r, address))) {
+    return [403, { error: 'an AI Wars Archive Shard is required to play', mintUrl: aiwars.mintUrl }];
   }
 
   const existing = await r.get(key.entry(start, address));

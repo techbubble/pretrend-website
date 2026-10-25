@@ -17,5 +17,7 @@ export const postStart = (address) => call('/api/trendplay/start', { address });
 export const postSubmit = (gameId, address, b) => call('/api/trendplay/submit', { gameId, address, b });
 export const getTick = (gameId, address) => call(`/api/trendplay/tick?gameId=${gameId}&address=${address}`);
 export const getLive = () => call('/api/trendplay/live');
+export const getEligibility = (address) => call(`/api/trendplay/eligibility?address=${address}`);
+export const postFulfill = (address) => call('/api/trendplay/fulfill', { address });
 export const getLeaderboard = () => call('/api/trendplay/leaderboard');
 export const postDrain = (address) => call('/api/trendplay/drain', { address });

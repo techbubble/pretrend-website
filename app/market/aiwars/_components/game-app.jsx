@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useAccount, useConfig, useReadContract, useWriteContract } from 'wagmi';
+import { useAccount, useConfig, useReadContract, useSwitchChain, useWriteContract } from 'wagmi';
 import { waitForTransactionReceipt } from 'wagmi/actions';
 import { erc20Abi } from 'viem';
 import { vitruveo } from './game-providers';
@@ -11,6 +11,7 @@ import { GAME_S, SOURCE, FEED, FALLBACK_THRESHOLDS, bucketOf, bLimitFor, gameIdF
 import { TRENDPULSE_BASE } from '../../../config/trendpulse';
 import { BUCKET_NAMES } from '../../../examples/_components/data/market-replays';
 import { Leaderboard } from './leaderboard';
+import { Eligibility } from './eligibility';
 
 const MONO = 'var(--aw-mono), ui-monospace, monospace';
 
@@ -160,6 +161,7 @@ export function GameApp() {
   const { address, chain, isConnected } = useAccount();
   const wagmiConfig = useConfig();
   const { writeContractAsync } = useWriteContract();
+  const { switchChainAsync } = useSwitchChain();
   const onVitruveo = chain?.id === vitruveo.id;
 
   const [cfg, setCfg] = useState(null);
@@ -175,6 +177,8 @@ export function GameApp() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [vipRetryUsed, setVipRetryUsed] = useState(false);
+  const [eligible, setEligible] = useState(false);
+  const onEligibility = useCallback((e) => setEligible(!!e?.eligible), []);
   const vipBaseline = useRef(null);
 
   const win = useLiveWindow(live);
@@ -292,6 +296,7 @@ export function GameApp() {
     setError(null);
     setStarting(true);
     try {
+      if (!onVitruveo) await switchChainAsync({ chainId: vitruveo.id });
       const g = await postStart(address);
       setResult(null);
       setEntry(g);
@@ -335,11 +340,13 @@ export function GameApp() {
   const canBuy = cfg?.testMode
     ? isConnected && !buyStatus
     : isConnected && onVitruveo && cfg && cfg.treasury && !buyStatus && maxCredits >= 1 && qty <= maxCredits;
-  const canJoin = isConnected && onVitruveo && stats.credits > 0 && !!cfg && !!live && !starting;
+  const canJoin = isConnected && eligible && stats.credits > 0 && !!cfg && !!live && !starting;
   const joinHint = !isConnected
     ? 'connect your wallet on Vitruveo to play'
     : !onVitruveo
-      ? 'switch your wallet to the Vitruveo network to play'
+      ? 'playing switches your wallet to Vitruveo'
+      : !eligible
+        ? 'an AI Wars Archive Shard is required to play'
       : stats.credits < 1
         ? 'you need at least 1 credit to play'
         : 'playing uses 1 credit for this window';
@@ -475,6 +482,8 @@ export function GameApp() {
       <p className="aw-faint mt-3 mb-0" style={{ fontFamily: MONO, fontSize: '0.8rem', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
         {FEED.note}
       </p>
+
+      <Eligibility onChange={onEligibility} />
 
       {SHOW_WALLET_BAR && <Leaderboard rows={lbRows} myAddress={address} />}
     </div>

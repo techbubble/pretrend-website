@@ -1856,3 +1856,21 @@ p {
 @media (max-width: 991.98px) {
   .aw-electric.h-100 .aw-electric-inner { min-height: 220px; }
 }
+
+/* -- access gate under the game -- */
+.aw-gate-title { font-size: 1.25rem; color: #eef3fb; letter-spacing: 0.04em; }
+.aw-gate-sub { font-size: 0.9rem; color: #b9c5da; letter-spacing: 0.06em; margin-top: 0.2rem; }
+.aw-gate-err { font-size: 0.85rem; color: #f87171; margin-top: 0.35rem; }
+.aw-btn-ghost { border-color: #1b2a44; background: transparent; color: #b9c5da; box-shadow: none; }
+.aw-btn-ghost:hover:not(:disabled) { border-color: #b9c5da; color: #eef3fb; background: transparent; box-shadow: none; }
+.aw-check {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; border-radius: 50%;
+  background: #4ade80; color: #04070d;
+  box-shadow: 0 0 18px rgba(74, 222, 128, 0.55);
+}
+.aw-gate-net { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem; font-size: 0.82rem; letter-spacing: 0.06em; color: #b9c5da; }
+.aw-net-dot { width: 0.5rem; height: 0.5rem; border-radius: 50%; background: #8fa0ba; }
+.aw-net-dot.is-game { background: #8b5cf6; box-shadow: 0 0 10px rgba(139, 92, 246, 0.75); }
+.aw-net-dot.is-mint { background: #f0b90b; box-shadow: 0 0 10px rgba(240, 185, 11, 0.6); }
+.aw-net-dot.is-other { background: #f87171; box-shadow: 0 0 10px rgba(248, 113, 113, 0.6); }
