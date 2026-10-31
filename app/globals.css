@@ -1486,3 +1486,19 @@ p {
     padding-left: 1rem;
   }
 }
+
+/* site nav: AIWars Trends button */
+.btn-signal {
+  border: 1px solid #2d8cff;
+  background: rgba(45, 140, 255, 0.15);
+  color: #2d8cff;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.btn-signal:hover,
+.btn-signal:focus {
+  background: rgba(45, 140, 255, 0.3);
+  border-color: #2d8cff;
+  color: #ffffff;
+}
