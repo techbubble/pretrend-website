@@ -231,7 +231,7 @@ export default function PretrendPage() {
                 <a href="/whitepaper" className="btn btn-outline-light btn-lg px-5">
                   Read the Whitepaper
                 </a>
-                <a href="/market/aiwars" className="btn btn-signal btn-lg px-5">
+                <a href="https://www.epicaiwars.com/trends" className="btn btn-signal btn-lg px-5">
                   AIWars Trends
                 </a>
               </div>
@@ -273,7 +273,7 @@ export default function PretrendPage() {
           <div className="container">
             <div className="row align-items-center g-5">
               <div className="col-lg-6">
-                <a href="/market/aiwars">
+                <a href="https://www.epicaiwars.com/trends">
                   <img
                     src="/images/trendplay.png"
                     alt="AIWars Trends gameplay: aiming a trend line at the five outcome buckets"
@@ -290,7 +290,7 @@ export default function PretrendPage() {
                   on AI Wars Battle Momentum: aim your line at Crash through Moon as the
                   telemetry streams in &mdash; the earlier you call it, the more points a win pays.
                 </p>
-                <a href="/market/aiwars" className="btn btn-signal btn-lg">
+                <a href="https://www.epicaiwars.com/trends" className="btn btn-signal btn-lg">
                   AIWars Trends
                 </a>
               </div>

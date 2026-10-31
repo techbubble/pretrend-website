@@ -16,7 +16,7 @@ export default function Header() {
   const isAbout = ['/about', '/whitepaper', '/ols', '/examples'].includes(cleanPath);
   // trailingSlash: true → usePathname() returns "/validators/"
   // Pages listed here must wrap Header in a wagmi/RainbowKit provider.
-  const showConnect = ['/validators', '/market/aiwars'].includes(cleanPath);
+  const showConnect = ['/validators'].includes(cleanPath);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 50);
@@ -88,7 +88,7 @@ export default function Header() {
               <a className="nav-link" href="/trendpulse">TrendPulse</a>
             </li>
             <li className="nav-item d-flex align-items-center" onClick={() => setMenuOpen(false)}>
-              <a href="/market/aiwars" className="btn btn-signal btn-sm px-3">AIWars Trends</a>
+              <a href="https://www.epicaiwars.com/trends" className="btn btn-signal btn-sm px-3">AIWars Trends</a>
             </li>
           </ul>
           {showConnect && (

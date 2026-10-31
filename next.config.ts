@@ -6,7 +6,10 @@ const nextConfig: NextConfig = {
   },
   trailingSlash: true,
   async redirects() {
-    return [{ source: '/trendplay', destination: '/market/aiwars', permanent: true }];
+    return [
+      { source: '/trendplay', destination: 'https://www.epicaiwars.com/trends', permanent: false },
+      { source: '/market/aiwars/:path*', destination: 'https://www.epicaiwars.com/trends', permanent: false },
+    ];
   },
 };
 
